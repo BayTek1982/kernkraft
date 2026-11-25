@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kernkraftwerk-Schule</title>
+<meta name="theme-color" content="#04070E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* Kompass Dark: Terminal-Look, große Bento-Kacheln, Mono-Überschriften, eine Akzentfarbe pro Bereich */
+:root{
+  --bg:#F3F5F9; --flaeche:#FFFFFF; --flaeche2:#E9EDF4; --linie:#D5DBE6;
+  --text:#0D1320; --grau:#566074;
+  --blau:#1C6BD0; --gruen:#0B8F59; --gold:#9A6A00; --rot:#CC3838; --violett:#6646CF;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --sans:"Inter",system-ui,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#04070E; --flaeche:#0B111C; --flaeche2:#121A28; --linie:#1D2636;
+    --text:#ECF0F6; --grau:#8A93A6;
+    --blau:#4DA3FF; --gruen:#26D68C; --gold:#F5C442; --rot:#F05A5A; --violett:#A98BFF;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#04070E; --flaeche:#0B111C; --flaeche2:#121A28; --linie:#1D2636;
+  --text:#ECF0F6; --grau:#8A93A6;
+  --blau:#4DA3FF; --gruen:#26D68C; --gold:#F5C442; --rot:#F05A5A; --violett:#A98BFF;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--blau);outline-offset:2px}
+h1,h2,h3{font-family:var(--mono);text-wrap:balance;margin:0;line-height:1.2}
+p{margin:0}
+.mono{font-family:var(--mono)}
+.klein{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--grau)}
+
+.rahmen{max-width:1180px;margin:0 auto;padding:0 16px 48px}
+.kopf{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;flex-wrap:wrap}
+.marke{display:flex;flex-direction:column;text-decoration:none;color:inherit}
+.marke b{font-family:var(--mono);font-size:18px}
+.thema{display:flex;border:1px solid var(--linie);border-radius:10px;overflow:hidden;background:var(--flaeche)}
+.thema button{border:0;background:none;padding:8px 10px;font-size:13px;font-family:var(--mono);color:var(--grau)}
+.thema button[aria-pressed="true"]{background:var(--flaeche2);color:var(--text)}
+
+.gitter{display:block}
+.seite{display:none}
+@media (min-width:960px){
+  .gitter{display:grid;grid-template-columns:270px minmax(0,1fr);gap:28px;align-items:start}
+  .seite{display:flex;flex-direction:column;gap:12px;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;border:1px solid var(--linie);border-radius:14px;background:var(--flaeche);padding:14px}
+}
+.seite input{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--linie);background:var(--bg);color:var(--text);font:inherit;font-size:14px}
+.seite h3{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--akz);margin-top:6px}
+.seite a{display:block;padding:5px 6px;border-radius:6px;font-size:14px;color:var(--text);text-decoration:none}
+.seite a:hover{background:var(--flaeche2)}
+.seite a.aus{color:var(--grau);pointer-events:none}
+.seite a.hier{background:var(--flaeche2)}
+
+.zurueck{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--linie);background:var(--flaeche);border-radius:10px;padding:8px 12px;font-family:var(--mono);font-size:13px;text-decoration:none;color:var(--text);margin-bottom:14px}
+.titelblock{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.titelblock h1{font-size:26px}
+.titelblock p{color:var(--grau);max-width:60ch}
+
+.bento{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:620px){.bento{grid-template-columns:1fr 1fr}.bento .breit{grid-column:span 2}}
+.kachel{display:flex;flex-direction:column;gap:10px;text-align:left;text-decoration:none;color:var(--text);background:var(--flaeche);border:1px solid var(--linie);border-top:3px solid var(--akz);border-radius:16px;padding:18px;min-height:170px}
+.kachel:hover{background:var(--flaeche2)}
+.kachel svg{width:44px;height:44px;color:var(--akz)}
+.kachel h2{font-size:19px}
+.kachel p{color:var(--grau);font-size:15px;flex:1}
+.balken{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:13px;color:var(--grau);font-variant-numeric:tabular-nums}
+.balken i{flex:1;height:6px;border-radius:3px;background:var(--flaeche2);overflow:hidden;display:block}
+.balken i b{display:block;height:100%;background:var(--akz)}
+.kachel.aus{opacity:.65;pointer-events:none}
+
+.karten{display:grid;grid-template-columns:1fr;gap:10px}
+@media (min-width:620px){.karten{grid-template-columns:1fr 1fr}}
+.karte{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--text);background:var(--flaeche);border:1px solid var(--linie);border-left:3px solid var(--akz);border-radius:12px;padding:14px}
+.karte:hover{background:var(--flaeche2)}
+.karte .klein{display:flex;justify-content:space-between;gap:8px}
+.karte b{font-family:var(--mono);font-size:16px}
+.karte.aus{border-left-color:var(--linie);color:var(--grau);pointer-events:none}
+.haken{color:var(--gruen)}
+
+.buehne{background:var(--flaeche);border:1px solid var(--linie);border-radius:16px 16px 0 0;overflow:hidden}
+canvas{display:block;width:100%;aspect-ratio:360/280}
+.steuer{background:var(--flaeche);border:1px solid var(--linie);border-top:0;border-radius:0 0 16px 16px;padding:10px 12px;display:flex;flex-direction:column;gap:10px}
+.reihe{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rund{width:42px;height:42px;border-radius:50%;border:1px solid var(--linie);background:var(--flaeche2);display:grid;place-items:center;flex:none}
+.rund.haupt{background:var(--akz);border-color:var(--akz);color:var(--bg)}
+.rund svg{width:18px;height:18px}
+input[type=range]{flex:1;min-width:120px;accent-color:var(--akz);height:28px}
+.chip{min-width:40px;height:36px;padding:0 10px;border-radius:9px;border:1px solid var(--linie);background:var(--flaeche2);font-family:var(--mono);font-size:14px}
+.chip[aria-pressed="true"]{background:var(--akz);border-color:var(--akz);color:var(--bg);font-weight:700}
+.tempo{display:flex;align-items:center;gap:8px;margin-left:auto}
+.erkl{margin-top:14px;background:var(--flaeche);border:1px solid var(--linie);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px;min-height:150px}
+.erkl .klein{color:var(--akz)}
+.erkl h2{font-size:18px}
+.erkl p{max-width:65ch}
+.merk{margin-top:12px;border:1px dashed var(--akz);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.merk p{font-family:var(--mono);font-weight:700}
+.boxen{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
+@media (min-width:620px){.boxen{grid-template-columns:1fr 1fr}}
+.box{background:var(--flaeche);border:1px solid var(--linie);border-left:3px solid var(--f);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.box .klein{color:var(--f)}
+.box p{font-size:15px}
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.opt{text-align:left;padding:14px 16px;border-radius:12px;border:1px solid var(--linie);background:var(--flaeche);font-size:16px;line-height:1.4}
+.opt:not(:disabled):hover{background:var(--flaeche2)}
+.opt:disabled{cursor:default;color:var(--grau)}
+.opt.richtig{border-color:var(--gruen);background:color-mix(in srgb,var(--gruen) 16%,var(--flaeche));color:var(--text)}
+.opt.falsch{border-color:var(--rot);background:color-mix(in srgb,var(--rot) 16%,var(--flaeche));color:var(--text)}
+.gross{display:block;width:100%;margin-top:14px;padding:14px;border-radius:12px;border:0;background:var(--gold);color:var(--bg);font-family:var(--mono);font-weight:700;font-size:15px}
+.zurLektion{font-family:var(--mono);font-size:13px;color:var(--blau);text-decoration:none;margin-top:4px}
+.zw{font-size:16px;margin:18px 0 10px}
+.weiter{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.weiter a{flex:1;border:1px solid var(--linie);background:var(--flaeche);border-radius:12px;padding:12px;text-decoration:none;color:var(--text);font-family:var(--mono);font-size:14px;display:flex;flex-direction:column;gap:2px}
+.weiter a:last-child{text-align:right}
+.weiter a.aus{color:var(--grau);pointer-events:none}
+</style>
+</head>
+<body>
+<div class="rahmen">
+  <header class="kopf">
+    <a class="marke" href="#start"><span class="klein">Kompass Schule</span><b>Kernkraftwerk</b></a>
+    <div class="thema" role="group" aria-label="Farbschema">
+      <button type="button" data-thema="dunkel">☾ Dunkel</button>
+      <button type="button" data-thema="hell">☀ Hell</button>
+      <button type="button" data-thema="auto">◐ Auto</button>
+    </div>
+  </header>
+  <div class="gitter">
+    <nav class="seite" id="seite" aria-label="Alle Lektionen"></nav>
+    <main id="inhalt"></main>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* ---------- Speicher (darf fehlen) ---------- */
+function lies(k,ersatz){try{const v=localStorage.getItem(k);return v===null?ersatz:JSON.parse(v)}catch(e){return ersatz}}
+function schreib(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+
+/* ---------- Daten: einzige Quelle für App, Shorts und Stimme ---------- */
+const BEREICHE=[
+ {id:1,name:"Atom & Kernspaltung",kurz:"Woraus ein Atom besteht und was passiert, wenn ein Kern zerbricht.",farbe:"blau",icon:"atom"},
+ {id:2,name:"Der Reaktor",kurz:"Brennstäbe, Moderator und Steuerstäbe: so wird die Kettenreaktion gezähmt.",farbe:"gold",icon:"reaktor"},
+ {id:3,name:"Vom Dampf zum Strom",kurz:"Wie aus heißem Wasser Dampf, Drehung und am Ende Strom wird.",farbe:"gruen",icon:"turbine"},
+ {id:4,name:"Sicherheit",kurz:"Barrieren, Schnellabschaltung, Notkühlung und was bei Unfällen schiefging.",farbe:"rot",icon:"schild"},
+ {id:5,name:"Strahlung & Abfall",kurz:"Alpha, Beta, Gamma, Halbwertszeit und wohin der Atommüll kommt.",farbe:"violett",icon:"strahlung"}
+];
+const LEKTIONEN=[
+ {nr:1,b:1,titel:"Das Atom: Kern und Hülle",zeichne:"atom",
+  bild:"Ein Atom: in der Mitte der kleine Kern aus Protonen und Neutronen, außen kreisen Elektronen.",
+  schritte:[
+   {titel:"Der Kern",dauer:6,text:"In der Mitte jedes Atoms sitzt der Kern. Er besteht aus Protonen und Neutronen. Protonen sind positiv geladen, Neutronen haben keine Ladung."},
+   {titel:"Die Hülle",dauer:6,text:"Um den Kern bewegen sich Elektronen. Sie sind negativ geladen und bilden die Hülle. Der positive Kern hält sie fest."},
+   {titel:"Fast alles ist leer",dauer:7,text:"Der Kern ist zehntausende Male kleiner als das ganze Atom. Wäre das Atom so groß wie ein Fußballstadion, wäre der Kern etwa so groß wie eine Erbse in der Mitte. Trotzdem stecken über 99,9 Prozent der Masse im Kern."},
+   {titel:"Die Protonen bestimmen den Stoff",dauer:7,text:"Die Zahl der Protonen legt fest, welcher Stoff es ist. 1 Proton ist Wasserstoff, 6 Protonen sind Kohlenstoff, 92 Protonen sind Uran. Uran hat einen der schwersten Kerne, die in der Natur vorkommen."}
+  ],
+  merksatz:"Kern: Protonen und Neutronen. Hülle: Elektronen. Die Protonen bestimmen den Stoff.",
+  boxen:{
+   was:"Ein Atom ist der kleinste Baustein eines Stoffes. Es besteht aus einem winzigen, schweren Kern und einer Hülle aus Elektronen.",
+   so:"Im Kern sitzen Protonen (positiv) und Neutronen (neutral). In der Hülle sind die Elektronen (negativ). Die Zahl der Protonen sagt dir, welcher Stoff es ist.",
+   bedeutet:"Chemie spielt sich in der Hülle ab, zum Beispiel beim Verbrennen. Kernkraft kommt aus dem Kern. Dort wirken viel größere Kräfte, deshalb steckt dort auch viel mehr Energie.",
+   tipp:"Die Kreisbahnen im Bild sind eine Vereinfachung. In Wirklichkeit bilden die Elektronen eher eine Wolke um den Kern."
+  }},
+ {nr:2,b:1,titel:"Uran, der Brennstoff",zeichne:"uran",
+  bild:"Zwei Uran-Sorten im Vergleich, dann der Anteil von Uran-235 in Natururan und in angereichertem Uran, zuletzt eine Brennstoff-Tablette.",
+  schritte:[
+   {titel:"Zwei Sorten Uran",dauer:6,text:"Jeder Uran-Kern hat 92 Protonen. Die Zahl der Neutronen kann aber verschieden sein. Solche Sorten heißen Isotope. Die wichtigsten sind Uran-238 und Uran-235."},
+   {titel:"Nur eine Sorte spaltet sich leicht",dauer:7,text:"Uran-238 schluckt ein langsames Neutron meist nur, ohne zu zerbrechen. Trifft das Neutron dagegen auf Uran-235, zerbricht der Kern. Für den Reaktor zählt deshalb vor allem Uran-235."},
+   {titel:"Natururan",dauer:6,text:"In Uran aus dem Bergwerk sind nur 7 von 1.000 Kernen Uran-235. Das sind 0,7 Prozent. Für die meisten Reaktoren ist das zu wenig."},
+   {titel:"Anreicherung",dauer:7,text:"Darum wird der Anteil von Uran-235 in Fabriken erhöht, auf 3 bis 5 Prozent. Das nennt man Anreicherung. Für eine Bombe bräuchte man rund 90 Prozent. Reaktor-Uran kann also nicht wie eine Atombombe explodieren."},
+   {titel:"Die Tablette",dauer:6,text:"Das angereicherte Uran wird zu Urandioxid verarbeitet, zu Tabletten gepresst und hart gebrannt. Eine Tablette ist etwa 1 Zentimeter groß und wiegt nur wenige Gramm."}
+  ],
+  merksatz:"Natururan hat 0,7 Prozent Uran-235. Der Reaktor braucht 3 bis 5 Prozent.",
+  boxen:{
+   was:"Uran ist ein schweres Metall aus der Erde. Als Brennstoff zählt vor allem die Sorte Uran-235, weil sich ihr Kern leicht spalten lässt.",
+   so:"Uran abbauen, den Anteil von Uran-235 von 0,7 auf 3 bis 5 Prozent erhöhen und daraus Urandioxid-Tabletten pressen.",
+   bedeutet:"Anreicherung ist aufwendig und wird streng überwacht. Dieselbe Technik könnte mit viel mehr Aufwand auch Bomben-Uran herstellen.",
+   tipp:"Die Zahl hinter dem Namen ist die Summe aus Protonen und Neutronen. Uran-235 heißt: 92 Protonen + 143 Neutronen."
+  }},
+ {nr:3,b:1,titel:"Die Kernspaltung",zeichne:"spaltung",
+  bild:"Ein Neutron trifft einen Uran-Kern. Der Kern zerbricht in zwei kleinere Kerne und drei Neutronen.",
+  schritte:[
+   {titel:"Der Uran-Kern",dauer:6,text:"Das ist der Kern eines Uran-235-Atoms. Er besteht aus 92 Protonen und 143 Neutronen, zusammen 235 Teilchen. Im Bild siehst du nur einen Teil davon. So ein großer Kern hält gerade noch zusammen."},
+   {titel:"Ein Neutron kommt",dauer:6,text:"Von links fliegt ein einzelnes Neutron heran. Es ist elektrisch neutral, deshalb stößt der Kern es nicht ab. Langsame Neutronen werden besonders leicht eingefangen."},
+   {titel:"Der Kern wird instabil",dauer:6,text:"Der Kern nimmt das Neutron auf. Für einen Moment ist er Uran-236 und hat zu viel Energie. Er schwingt, zieht sich in die Länge und schnürt sich in der Mitte ein."},
+   {titel:"Der Kern zerbricht",dauer:6,text:"Der Kern reißt in zwei kleinere Kerne, hier Barium-141 und Krypton-92. Dazu werden 3 Neutronen frei. Die Rechnung geht auf: 141 + 92 + 3 = 236."},
+   {titel:"Wärme entsteht",dauer:7,text:"Die beiden Bruchstücke fliegen mit rund 10.000 Kilometern pro Sekunde auseinander und werden vom umgebenden Material gebremst. Aus der Bewegung wird Wärme. Die freien Neutronen können weitere Kerne spalten."}
+  ],
+  merksatz:"Neutron rein, zwei Kerne und neue Neutronen raus, dazu Wärme.",
+  boxen:{
+   was:"Kernspaltung heißt: Ein schwerer Atomkern zerfällt in zwei leichtere Kerne. Dabei werden Neutronen und sehr viel Energie frei.",
+   so:"Erstens trifft ein langsames Neutron auf Uran-235. Zweitens wird der Kern zu Uran-236 und schwingt. Drittens zerbricht er in zwei Bruchstücke und 2 bis 3 Neutronen.",
+   bedeutet:"Eine einzige Spaltung liefert rund 200 MeV (eine Energie-Einheit für einzelne Atome). Das ist etwa 50 Millionen Mal mehr als beim Verbrennen eines Kohlenstoff-Atoms. Darum reicht wenig Uran für viel Strom.",
+   tipp:"Barium und Krypton sind nur ein Beispiel. Der Kern kann auf viele Arten zerbrechen. Die Summe der Teilchen bleibt aber immer gleich."
+  }},
+ {nr:4,b:1,titel:"Die Kettenreaktion",zeichne:"kette",
+  bild:"Aus einer Spaltung werden zwei, dann vier, dann acht. Zum Schluss die gebremste Kette im Reaktor: immer eine nach der anderen.",
+  schritte:[
+   {titel:"Die erste Spaltung",dauer:6,text:"Ein Neutron spaltet einen Uran-Kern. Dabei werden 2 bis 3 neue Neutronen frei. Im Bild rechnen wir einfach mit 2."},
+   {titel:"Jedes Neutron trifft einen Kern",dauer:6,text:"Die neuen Neutronen treffen auf weitere Uran-Kerne und spalten sie. Jetzt gibt es schon 2 Spaltungen und 4 freie Neutronen."},
+   {titel:"Die Lawine",dauer:7,text:"So geht es weiter: 4, 8, 16, 32. Jede Runde dauert nur einen winzigen Bruchteil einer Sekunde. Ohne Bremse wächst die Zahl der Spaltungen wie eine Lawine."},
+   {titel:"Im Reaktor: genau eins",dauer:9,text:"Im Reaktor darf von den neuen Neutronen im Schnitt genau eines wieder einen Kern spalten. Die übrigen werden geschluckt oder gehen verloren. Dann bleibt die Zahl der Spaltungen gleich, und der Reaktor liefert gleichmäßig Wärme."}
+  ],
+  merksatz:"Eine Spaltung löst die nächste aus. Im Reaktor im Schnitt genau eine.",
+  boxen:{
+   was:"Bei einer Kettenreaktion löst jede Spaltung die nächste aus, weil die frei werdenden Neutronen weitere Kerne treffen.",
+   so:"Zähle, wie viele Neutronen aus einer Spaltung wieder eine Spaltung auslösen. Mehr als eins: Es wird mehr. Genau eins: Es bleibt gleich. Weniger als eins: Es hört auf.",
+   bedeutet:"Im Reaktor wird die Kettenreaktion genau auf eins gehalten. In einer Atombombe soll sie dagegen so schnell wie möglich wachsen.",
+   tipp:"Rechenaufgabe: Verdoppelt sich die Zahl in jeder Runde, sind es nach 10 Runden schon 1.024 Spaltungen (2 hoch 10)."
+  }},
+ {nr:5,b:1,titel:"Aus Masse wird Wärme",zeichne:"masse",
+  bild:"Nach der Spaltung fehlt etwas Masse. Sie wird zu Energie. 1 Kilogramm Uran-235 entspricht 45 Güterwagen Steinkohle.",
+  schritte:[
+   {titel:"Nach der Spaltung fehlt etwas",dauer:7,text:"Wiegt man alle Teile vor und nach der Spaltung, fällt etwas auf: Nachher fehlt ein winziges Stück Masse, etwa ein Tausendstel."},
+   {titel:"E = m · c²",dauer:7,text:"Die fehlende Masse ist nicht verschwunden. Sie ist zu Energie geworden. Das beschreibt Einsteins Formel E = m · c². Weil die Lichtgeschwindigkeit c riesig ist, wird aus sehr wenig Masse sehr viel Energie."},
+   {titel:"Der Vergleich mit Kohle",dauer:7,text:"Würde man 1 Kilogramm Uran-235 vollständig spalten, käme so viel Wärme heraus wie beim Verbrennen von rund 2.700 Tonnen Steinkohle. Das sind etwa 45 volle Güterwagen."},
+   {titel:"Aus Wärme wird Strom",dauer:7,text:"Im Kraftwerk entsteht die Wärme im Brennstab. Sie macht Wasser heiß, und der Dampf treibt die Turbine an. Nur etwa ein Drittel der Wärme wird am Ende zu Strom, der Rest ist Abwärme."}
+  ],
+  merksatz:"Ein Tausendstel der Masse wird zu Energie: E = m · c².",
+  boxen:{
+   was:"Bei der Spaltung verschwindet ein winziger Teil der Masse. Er wird zu Energie. Diese Energie ist die Wärme des Kernkraftwerks.",
+   so:"Masse vorher minus Masse nachher ergibt die fehlende Masse. Mal Lichtgeschwindigkeit zum Quadrat ergibt die Energie: E = m · c².",
+   bedeutet:"1 Kilogramm Uran-235 ersetzt rund 2.700 Tonnen Steinkohle. Deshalb braucht ein Kernkraftwerk nur wenig Brennstoff und stößt im Betrieb kein CO₂ aus.",
+   tipp:"Rechenaufgabe: Aus 1 Gramm verschwundener Masse werden rund 25 Millionen Kilowattstunden. So viel wird frei, wenn etwa 1 Kilogramm Uran-235 gespalten wird."
+  }},
+ {nr:6,b:2,titel:"Brennstab und Brennelement",zeichne:"brennstab",
+  bild:"Von der Uran-Tablette über den Brennstab und das Brennelement bis zum Reaktorkern von oben.",
+  schritte:[
+   {titel:"Die Tablette",dauer:5,text:"Am Anfang steht die Uran-Tablette. Sie ist etwa 1 Zentimeter groß und hart wie Keramik."},
+   {titel:"Der Brennstab",dauer:7,text:"Mehrere hundert Tabletten werden in ein dünnes Metallrohr gefüllt. Das Rohr ist rund 4 Meter lang, aber nur etwa 1 Zentimeter dick. Es wird gasdicht verschweißt. Das ist der Brennstab."},
+   {titel:"Das Brennelement",dauer:7,text:"200 bis 300 Brennstäbe werden zu einem Bündel zusammengefasst. Abstandshalter halten die Stäbe auf Lücke, damit Wasser dazwischen durchfließen kann. Das Bündel heißt Brennelement."},
+   {titel:"Der Reaktorkern",dauer:7,text:"Im Reaktor stehen viele Brennelemente dicht nebeneinander. In einem großen deutschen Druckwasserreaktor waren es 193. Zusammen enthalten sie rund 100 Tonnen Uran. Das ist der Reaktorkern."}
+  ],
+  merksatz:"Tabletten im Rohr sind ein Brennstab. Ein Bündel Brennstäbe ist ein Brennelement.",
+  boxen:{
+   was:"Ein Brennstab ist ein dünnes, gasdichtes Metallrohr voller Uran-Tabletten. Viele Brennstäbe zusammen bilden ein Brennelement.",
+   so:"Tablette, Brennstab, Brennelement, Reaktorkern: vier Stufen, jede fasst die vorige zusammen.",
+   bedeutet:"Das Hüllrohr hält die strahlenden Spaltprodukte fest. Nach der Tablette selbst ist es die zweite Barriere zwischen Brennstoff und Umwelt.",
+   tipp:"Ein Brennelement bleibt etwa 3 bis 5 Jahre im Reaktor. Einmal im Jahr wird ein Teil der Elemente gegen frische getauscht."
+  }},
+ {nr:7,b:2,titel:"Der Moderator: Wasser bremst Neutronen",zeichne:"moderator",
+  bild:"Ein schnelles Neutron fliegt am Uran-Kern vorbei. Im Wasser wird es durch Stöße langsam und spaltet dann den Kern.",
+  schritte:[
+   {titel:"Zu schnell",dauer:6,text:"Bei der Spaltung werden die Neutronen sehr schnell frei, mit rund 20.000 Kilometern pro Sekunde. So schnelle Neutronen spalten Uran-235 nur selten. Meist fliegen sie einfach vorbei."},
+   {titel:"Wasser als Bremse",dauer:8,text:"Darum steht der Brennstoff im Wasser. Die Neutronen stoßen mit den Wasserstoff-Kernen im Wasser zusammen. Ein Wasserstoff-Kern ist fast genauso schwer wie ein Neutron. Deshalb gibt das Neutron bei jedem Stoß viel Tempo ab, wie eine Billardkugel."},
+   {titel:"Langsam trifft",dauer:7,text:"Nach etwa 20 Stößen ist das Neutron rund 10.000-mal langsamer, nur noch etwa 2 Kilometer pro Sekunde. Jetzt fängt Uran-235 es leicht ein, und der Kern zerbricht. Ein Stoff, der Neutronen so abbremst, heißt Moderator."},
+   {titel:"Eingebaute Sicherheit",dauer:7,text:"Das Wasser hat noch einen Vorteil. Wird es zu heiß oder verdampft es, bremst es schlechter. Dann gibt es weniger Spaltungen, und die Leistung sinkt von selbst."}
+  ],
+  merksatz:"Wasser bremst Neutronen. Nur langsame Neutronen spalten Uran-235 gut.",
+  boxen:{
+   was:"Ein Moderator ist ein Stoff, der schnelle Neutronen abbremst. In den meisten Reaktoren ist das ganz normales Wasser.",
+   so:"Ein schnelles Neutron stößt mit Wasserstoff-Kernen zusammen, wird nach etwa 20 Stößen langsam und kann dann Uran-235 spalten.",
+   bedeutet:"Ohne Moderator gäbe es in schwach angereichertem Uran keine Kettenreaktion. Geht das Wasser verloren, hört die Spaltung deshalb von selbst auf. Die Nachwärme bleibt aber (Lektion 18).",
+   tipp:"Nicht verwechseln: Der Moderator bremst Neutronen, damit es mehr Spaltungen gibt. Die Steuerstäbe schlucken Neutronen, damit es weniger gibt."
+  }},
+ {nr:8,b:2,titel:"Steuerstäbe: Gas und Bremse",zeichne:"steuerstab",
+  bild:"Steuerstäbe fahren von oben zwischen die Brennstäbe. Je tiefer sie stecken, desto weniger Neutronen und desto weniger Leistung.",
+  schritte:[
+   {titel:"Neutronen-Schlucker",dauer:6,text:"Steuerstäbe bestehen aus Stoffen, die Neutronen besonders gut schlucken, zum Beispiel Bor oder Cadmium. Ein geschlucktes Neutron kann keinen Kern mehr spalten."},
+   {titel:"Stäbe rein: Bremse",dauer:6,text:"Fährt man die Steuerstäbe tiefer zwischen die Brennstäbe, schlucken sie mehr Neutronen. Es gibt weniger Spaltungen, die Leistung sinkt."},
+   {titel:"Stäbe raus: Gas",dauer:6,text:"Zieht man die Stäbe ein Stück heraus, bleiben mehr Neutronen übrig. Die Zahl der Spaltungen steigt, der Reaktor liefert mehr Wärme."},
+   {titel:"Ganz drin: aus",dauer:7,text:"Sind alle Steuerstäbe ganz eingefahren, bricht die Kettenreaktion ab. Bei einer Schnellabschaltung fallen sie im Druckwasserreaktor in etwa 2 Sekunden von selbst in den Kern, allein durch die Schwerkraft."}
+  ],
+  merksatz:"Stäbe rein: weniger Leistung. Stäbe raus: mehr Leistung.",
+  boxen:{
+   was:"Steuerstäbe sind Stäbe aus Stoffen, die Neutronen schlucken. Mit ihnen wird die Kettenreaktion geregelt und abgeschaltet.",
+   so:"Tiefer hinein: weniger Neutronen, weniger Leistung. Weiter heraus: mehr Neutronen, mehr Leistung. Ganz hinein: aus.",
+   bedeutet:"Die Steuerstäbe sind Gaspedal und Notbremse zugleich. Fällt der Strom aus, fallen sie im Druckwasserreaktor von selbst in den Kern.",
+   tipp:"Im Druckwasserreaktor wird die Leistung im Alltag vor allem mit Borsäure im Wasser eingestellt. Auch Bor schluckt Neutronen. Die Steuerstäbe sind für schnelle Änderungen und das Abschalten da."
+  }},
+ {nr:9,b:2,titel:"Der Reaktordruckbehälter",zeichne:"behaelter",
+  bild:"Schnitt durch den Reaktordruckbehälter: dicker Stahl, unten der Kern, oben die Steuerstäbe, Wasser strömt hindurch.",
+  schritte:[
+   {titel:"Ein Topf aus Stahl",dauer:6,text:"Der Reaktorkern steckt in einem riesigen Stahlbehälter. Er ist rund 12 Meter hoch, hat 5 Meter Durchmesser und eine Wand aus etwa 25 Zentimeter dickem Stahl."},
+   {titel:"Der Kern sitzt unten",dauer:6,text:"Unten im Behälter stehen die Brennelemente. Von oben ragen die Steuerstäbe hinein. Der Deckel ist verschraubt und lässt sich zum Wechseln der Brennelemente abnehmen."},
+   {titel:"Wasser strömt durch",dauer:8,text:"Wasser strömt seitlich ein, an der Wand nach unten und dann von unten nach oben durch den Kern. Dabei nimmt es die Wärme mit. Es kommt mit rund 290 Grad an und verlässt den Behälter mit rund 325 Grad."},
+   {titel:"Warum der hohe Druck?",dauer:7,text:"Bei 325 Grad würde Wasser normalerweise längst kochen. Im Druckwasserreaktor steht es deshalb unter rund 155 bar. Das ist etwa der Druck in 1.500 Metern Meerestiefe. So bleibt das Wasser flüssig."}
+  ],
+  merksatz:"Dicker Stahl, hoher Druck: So bleibt das Wasser bei 325 Grad flüssig.",
+  boxen:{
+   was:"Der Reaktordruckbehälter ist ein dickwandiger Stahlbehälter. In ihm sitzen der Reaktorkern und das Wasser, das die Wärme abholt.",
+   so:"Das Wasser strömt seitlich ein, an der Wand nach unten, durch den Kern nach oben und heiß wieder hinaus.",
+   bedeutet:"Der Behälter muss 155 bar und über 300 Grad jahrzehntelang aushalten. Er ist die dritte Barriere und lässt sich nicht austauschen. Sein Zustand bestimmt mit, wie lange ein Kraftwerk laufen darf.",
+   tipp:"Diese Zahlen gelten für den Druckwasserreaktor. Im Siedewasserreaktor sind es nur rund 70 bar, dort darf das Wasser im Behälter kochen (Lektion 12)."
+  }},
+ {nr:10,b:2,titel:"Kritisch, unterkritisch, überkritisch",zeichne:"kritisch",
+  bild:"Diagramm Leistung über Zeit: Die Kurve fällt bei k kleiner 1, bleibt gleich bei k gleich 1 und steigt bei k größer 1.",
+  schritte:[
+   {titel:"Die Zahl k",dauer:7,text:"Entscheidend ist eine einzige Zahl: Wie viele Neutronen aus einer Spaltung lösen wieder eine Spaltung aus? Fachleute nennen diese Zahl k."},
+   {titel:"Unterkritisch: k kleiner als 1",dauer:6,text:"Ist k kleiner als 1, werden es von Runde zu Runde weniger Spaltungen. Die Kettenreaktion schläft ein. So ist es beim abgeschalteten Reaktor."},
+   {titel:"Kritisch: k genau 1",dauer:6,text:"Ist k genau 1, bleibt die Zahl der Spaltungen gleich. Das klingt gefährlich, ist aber der ganz normale Betrieb: Der Reaktor liefert gleichmäßig Leistung."},
+   {titel:"Überkritisch: k größer als 1",dauer:7,text:"Ist k größer als 1, steigt die Leistung. Zum Hochfahren stellt man k nur ganz knapp über 1 ein, zum Beispiel auf 1,001. Dann wächst die Leistung langsam und gut beherrschbar."},
+   {titel:"Die Kunst des Regelns",dauer:8,text:"Steuerstäbe, Bor im Wasser und die Wassertemperatur verschieben k. Im Betrieb wird k auf genau 1 gehalten. Für mehr Leistung geht man kurz knapp darüber, für weniger knapp darunter."}
+  ],
+  merksatz:"k unter 1: es wird weniger. k gleich 1: es bleibt. k über 1: es wird mehr.",
+  boxen:{
+   was:"Kritisch heißt: Jede Spaltung löst im Schnitt genau eine neue aus. Das ist der Normalbetrieb und kein Alarmwort.",
+   so:"k kleiner als 1: unterkritisch, die Leistung fällt. k gleich 1: kritisch, die Leistung bleibt. k größer als 1: überkritisch, die Leistung steigt.",
+   bedeutet:"Ein Reaktor wird nicht mit einem Schalter eingeschaltet. Man hebt k ganz knapp über 1, wartet, bis die gewünschte Leistung erreicht ist, und stellt wieder genau 1 ein.",
+   tipp:"Rechenaufgabe: 100 Spaltungen, k = 0,9. Nach einer Runde sind es 90, nach zwei Runden 81."
+  }},
+ {nr:11,b:3,titel:"Druckwasserreaktor: zwei Kreisläufe",zeichne:"dwr",
+  bild:"Schema eines Druckwasserreaktors: Reaktor und Dampferzeuger im Sicherheitsbehälter, daneben Turbine, Generator, Kondensator und Kühlturm.",
+  schritte:[
+   {titel:"Der erste Kreislauf",dauer:7,text:"Im Druckwasserreaktor gibt es zwei getrennte Wasserkreisläufe. Im ersten pumpen große Pumpen das Wasser durch den Reaktor. Dort wird es 325 Grad heiß. Es kocht aber nicht, weil es unter 155 bar Druck steht."},
+   {titel:"Der Dampferzeuger",dauer:7,text:"Das heiße Wasser fließt durch tausende dünne Rohre im Dampferzeuger. Außen an den Rohren fließt das Wasser des zweiten Kreislaufs. Es nimmt die Wärme auf und verdampft. Die beiden Wasser berühren sich nie."},
+   {titel:"Der zweite Kreislauf",dauer:8,text:"Der Dampf strömt mit rund 65 bar zur Turbine und dreht sie. Die Turbine treibt den Generator an, der Strom erzeugt. Danach wird der Dampf im Kondensator wieder zu Wasser und zurückgepumpt."},
+   {titel:"Der Kühlkreis",dauer:6,text:"Ein dritter Wasserkreis kühlt den Kondensator. Er führt die Abwärme an einen Fluss oder über den Kühlturm an die Luft ab."},
+   {titel:"Warum zwei Kreisläufe?",dauer:7,text:"Das Wasser aus dem Reaktor ist leicht radioaktiv. Weil es im ersten Kreislauf bleibt, kommt die Turbine nur mit sauberem Dampf in Berührung. Alles Radioaktive bleibt im Sicherheitsbehälter."}
+  ],
+  merksatz:"Zwei Kreisläufe: Der erste holt die Wärme, der zweite macht daraus Dampf für die Turbine.",
+  boxen:{
+   was:"Der Druckwasserreaktor ist die häufigste Bauart der Welt. Er hat zwei getrennte Wasserkreisläufe, die nur Wärme austauschen.",
+   so:"Erster Kreislauf: Reaktor, Dampferzeuger, Pumpe. Zweiter Kreislauf: Dampferzeuger, Turbine, Kondensator, Pumpe. Dazu kommt der Kühlkreis zum Kühlturm oder Fluss.",
+   bedeutet:"Radioaktives Wasser bleibt im Sicherheitsbehälter. Die Turbine läuft mit sauberem Dampf und kann wie in einem normalen Kraftwerk gewartet werden.",
+   tipp:"Ein großer Druckwasserreaktor hat nicht einen, sondern vier Dampferzeuger und vier Hauptpumpen. Im Bild ist nur ein Strang gezeichnet."
+  }},
+ {nr:12,b:3,titel:"Siedewasserreaktor: ein Kreislauf",zeichne:"swr",
+  bild:"Schema eines Siedewasserreaktors: Der Dampf geht aus dem Reaktor direkt zur Turbine, ohne Dampferzeuger.",
+  schritte:[
+   {titel:"Wasser kocht im Reaktor",dauer:7,text:"Im Siedewasserreaktor darf das Wasser direkt im Reaktor kochen. Der Druck ist mit rund 70 bar nur halb so hoch wie im Druckwasserreaktor. Über dem Kern entsteht Dampf von etwa 285 Grad."},
+   {titel:"Dampf direkt zur Turbine",dauer:7,text:"Der Dampf strömt ohne Umweg zur Turbine. Einen Dampferzeuger gibt es nicht. Nach der Turbine wird der Dampf im Kondensator zu Wasser und zurück in den Reaktor gepumpt."},
+   {titel:"Einfacher, aber mit Haken",dauer:7,text:"Das spart Bauteile. Der Nachteil: Der Dampf kommt aus dem Reaktor und ist leicht radioaktiv. Deshalb gehört auch die Turbine zum Kontrollbereich und muss abgeschirmt werden."},
+   {titel:"Steuerstäbe von unten",dauer:7,text:"Oben im Behälter sitzen die Dampftrockner. Die Steuerstäbe werden deshalb von unten in den Kern geschoben, mit Wasserdruck statt durch die Schwerkraft."},
+   {titel:"Der Vergleich",dauer:8,text:"Beide Bauarten nutzen Wasser zum Kühlen und zum Bremsen der Neutronen. In Deutschland liefen beide, zum Beispiel Isar 2 als Druckwasserreaktor und Gundremmingen als Siedewasserreaktor. Weltweit sind Druckwasserreaktoren am häufigsten."}
+  ],
+  merksatz:"Siedewasser: ein Kreislauf, das Wasser kocht im Reaktor.",
+  boxen:{
+   was:"Im Siedewasserreaktor kocht das Wasser direkt im Reaktor. Der Dampf geht ohne Umweg zur Turbine. Es gibt nur einen Kreislauf.",
+   so:"Reaktor, Turbine, Kondensator, Pumpe und zurück. Der Druck liegt bei rund 70 bar, die Steuerstäbe kommen von unten.",
+   bedeutet:"Es gibt weniger Bauteile, aber die Turbine wird im Betrieb leicht radioaktiv. Nach dem Abschalten klingt das schnell ab, weil die Stoffe im Dampf nur Sekunden bis Minuten strahlen.",
+   tipp:"Die Reaktoren in Fukushima waren Siedewasserreaktoren. Tschernobyl war eine ganz andere Bauart mit Graphit (Lektion 20)."
+  }},
+ {nr:13,b:3,titel:"Der Dampferzeuger",zeichne:"dampferzeuger",
+  bild:"Schnitt durch einen Dampferzeuger: innen U-Rohre mit heißem Reaktorwasser, außen verdampft das Speisewasser, oben tritt Dampf aus.",
+  schritte:[
+   {titel:"Ein riesiger Wärmetauscher",dauer:6,text:"Der Dampferzeuger ist rund 20 Meter hoch. In ihm stecken etwa 4.000 dünne Rohre, jedes wie ein umgedrehtes U gebogen."},
+   {titel:"Innen: heißes Reaktorwasser",dauer:7,text:"Das Wasser aus dem Reaktor strömt unten in die Rohre, steigt auf, läuft durch den Bogen und kommt auf der anderen Seite wieder heraus. Dabei kühlt es von 325 auf etwa 290 Grad ab."},
+   {titel:"Außen: Wasser wird zu Dampf",dauer:7,text:"Außen um die Rohre fließt das Wasser des zweiten Kreislaufs. Es kommt mit rund 220 Grad an, wird an den heißen Rohren weiter erhitzt und verdampft."},
+   {titel:"Trockener Dampf",dauer:7,text:"Oben im Dampferzeuger werden Wassertröpfchen abgeschieden, denn Tropfen würden die Turbinenschaufeln beschädigen. Heraus kommt trockener Dampf mit rund 280 Grad und 65 bar."},
+   {titel:"Dünn, aber dicht",dauer:8,text:"Die Rohrwände sind nur etwa 1 Millimeter dick, damit die Wärme gut hindurchgeht. Trotzdem müssen sie dicht bleiben, denn sie trennen das radioaktive Wasser vom sauberen. Deshalb werden die Rohre regelmäßig geprüft."}
+  ],
+  merksatz:"Innen heißes Reaktorwasser, außen entsteht Dampf. Dazwischen nur eine dünne Rohrwand.",
+  boxen:{
+   was:"Der Dampferzeuger ist ein Wärmetauscher. Er überträgt die Wärme vom Reaktorwasser auf das Wasser des zweiten Kreislaufs, ohne dass sich beide mischen.",
+   so:"Heißes Reaktorwasser fließt innen durch die U-Rohre. Außen verdampft das Speisewasser. Oben werden Tropfen abgeschieden.",
+   bedeutet:"Die dünnen Rohre gehören zur Grenze des ersten Kreislaufs. Ein undichtes Rohr würde Radioaktivität in den zweiten Kreislauf bringen. Deshalb wird geprüft und notfalls ein Rohr verschlossen.",
+   tipp:"Nur der Druckwasserreaktor hat Dampferzeuger. Der Siedewasserreaktor braucht keinen."
+  }},
+ {nr:14,b:3,titel:"Turbine und Generator",zeichne:"turbine",
+  bild:"Dampf dreht das Schaufelrad der Turbine. Auf derselben Welle sitzt der Generator, in dem sich ein Magnet in einer Spule dreht.",
+  schritte:[
+   {titel:"Dampf trifft Schaufeln",dauer:6,text:"Der Dampf strömt mit hoher Geschwindigkeit auf die Schaufeln der Turbine und versetzt sie in Drehung. Aus Wärme wird Bewegung."},
+   {titel:"Hochdruck und Niederdruck",dauer:7,text:"Der Dampf gibt seine Energie in Stufen ab. Erst durchströmt er die Hochdruck-Turbine, dann die Niederdruck-Turbinen. Dabei dehnt er sich aus. Deshalb werden die Schaufeln immer länger, am Ende über 1 Meter."},
+   {titel:"1.500 Umdrehungen pro Minute",dauer:6,text:"Die Welle dreht sich 1.500-mal pro Minute, also 25-mal pro Sekunde. Mit allen Turbinen und dem Generator ist sie über 50 Meter lang."},
+   {titel:"Der Generator",dauer:7,text:"Am Ende der Welle sitzt der Generator. In ihm dreht sich ein starker Magnet in einer Spule aus Kupfer. Das erzeugt Strom, im Prinzip wie bei einem Fahrrad-Dynamo. Heraus kommt Wechselstrom mit 50 Hertz."},
+   {titel:"Die Leistung",dauer:7,text:"Ein großes Kernkraftwerk liefert rund 1.400 Megawatt Strom. Das reicht für etwa 3 Millionen Haushalte."}
+  ],
+  merksatz:"Dampf dreht die Turbine, die Turbine dreht den Generator, der Generator macht Strom.",
+  boxen:{
+   was:"Die Turbine macht aus der Energie des Dampfes eine Drehung. Der Generator macht aus der Drehung Strom.",
+   so:"Der Dampf strömt erst durch die Hochdruck-, dann durch die Niederdruck-Turbinen. Alle sitzen mit dem Generator auf einer Welle.",
+   bedeutet:"Dieser Teil ist in jedem Wärmekraftwerk fast gleich, egal ob die Wärme aus Kohle, Gas oder Uran kommt. Nur die Wärmequelle ist anders.",
+   tipp:"Rechenaufgabe: 1.400 Megawatt, ein Jahr lang rund um die Uhr, ergeben etwa 12 Milliarden Kilowattstunden."
+  }},
+ {nr:15,b:3,titel:"Kondensator und Kühlturm",zeichne:"kuehlturm",
+  bild:"Im Kondensator wird Dampf an kalten Rohren zu Wasser. Im Kühlturm rieselt das warme Kühlwasser herab, darüber steht eine Wolke aus Wasserdampf.",
+  schritte:[
+   {titel:"Dampf muss wieder Wasser werden",dauer:7,text:"Hinter der Turbine ist der Dampf dünn und nur noch etwa 35 Grad warm. Im Kondensator strömt er an kalten Rohren vorbei und wird wieder zu Wasser. Erst dann kann er zurückgepumpt werden."},
+   {titel:"Der Unterdruck hilft",dauer:7,text:"Beim Verflüssigen schrumpft der Dampf gewaltig. Dadurch entsteht im Kondensator fast ein Vakuum. Dieser Sog zieht den Dampf durch die Turbine und holt mehr Arbeit aus ihm heraus."},
+   {titel:"Der Kühlturm",dauer:7,text:"Das Kühlwasser hat sich im Kondensator erwärmt. Im Kühlturm rieselt es herab, während Luft von unten nach oben zieht. Ein kleiner Teil verdunstet und kühlt den Rest ab."},
+   {titel:"Die Wolke ist nur Wasserdampf",dauer:6,text:"Die weiße Fahne über dem Kühlturm ist reiner Wasserdampf, wie aus einem Kochtopf. Dieses Wasser hat nie Kontakt mit dem Reaktor und ist nicht radioaktiv."},
+   {titel:"Zwei Drittel gehen verloren",dauer:7,text:"Von der Wärme aus dem Reaktor wird nur etwa ein Drittel zu Strom. Zwei Drittel gehen als Abwärme über Kühlturm oder Fluss weg. Das ist bei jedem Wärmekraftwerk ähnlich, moderne Kohlekraftwerke schaffen etwas mehr."}
+  ],
+  merksatz:"Der Kondensator macht Dampf zu Wasser. Die Wolke über dem Kühlturm ist nur Wasserdampf.",
+  boxen:{
+   was:"Der Kondensator macht aus dem Dampf wieder Wasser. Der Kühlturm gibt die dabei frei werdende Wärme an die Luft ab.",
+   so:"Der Dampf strömt an kalten Rohren vorbei und wird flüssig. Das erwärmte Kühlwasser rieselt im Kühlturm herab und kühlt durch Verdunstung ab.",
+   bedeutet:"Ein Kraftwerk braucht viel Kühlwasser. In heißen Sommern mit wenig oder zu warmem Flusswasser müssen Kraftwerke deshalb manchmal ihre Leistung senken.",
+   tipp:"Nicht jedes Kernkraftwerk hat einen Kühlturm. Liegt es an einem großen Fluss oder am Meer, kann es direkt mit diesem Wasser kühlen."
+  }},
+ {nr:16,b:4,titel:"Die Barrieren",zeichne:"barrieren",
+  bild:"Fünf Hüllen liegen wie Zwiebelschalen um den Brennstoff: Tablette, Hüllrohr, Druckbehälter, Stahlkugel und Betonhülle.",
+  schritte:[
+   {titel:"Die Tablette selbst",dauer:6,text:"Die erste Barriere ist der Brennstoff. Die keramische Tablette hält den größten Teil der radioaktiven Spaltprodukte in ihrem Inneren fest."},
+   {titel:"Das Hüllrohr",dauer:6,text:"Um die Tabletten liegt das gasdicht verschweißte Hüllrohr. Es fängt auch die gasförmigen Spaltprodukte auf."},
+   {titel:"Der Reaktordruckbehälter",dauer:6,text:"Der Druckbehälter und die Rohre des ersten Kreislaufs bilden die dritte Barriere. Sie sind aus dickem Stahl."},
+   {titel:"Der Sicherheitsbehälter",dauer:7,text:"Der ganze erste Kreislauf steht in einer gasdichten Stahlkugel. Sie hat rund 56 Meter Durchmesser und soll auch bei einem Rohrbruch alles einschließen."},
+   {titel:"Die Betonhülle",dauer:7,text:"Außen schützt eine fast 2 Meter dicke Hülle aus Stahlbeton. Sie hält Strahlung zurück und schützt die Anlage vor Einwirkungen von außen, zum Beispiel vor einem Flugzeugabsturz."}
+  ],
+  merksatz:"Mehrere Hüllen hintereinander: Versagt eine, hält die nächste.",
+  boxen:{
+   was:"Barrieren sind hintereinander liegende Hüllen, die die radioaktiven Stoffe einschließen. Versagt eine, hält die nächste.",
+   so:"Von innen nach außen: Tablette, Hüllrohr, Druckbehälter mit erstem Kreislauf, Sicherheitsbehälter aus Stahl, Hülle aus Stahlbeton.",
+   bedeutet:"Radioaktivität kann nur austreten, wenn mehrere Barrieren gleichzeitig versagen. Deshalb ist die Kühlung so wichtig: Zu große Hitze kann gleich mehrere Barrieren zerstören.",
+   tipp:"Manche Bücher zählen sechs Barrieren, weil sie den Betonschild rund um den Druckbehälter mitzählen. Das Prinzip ist dasselbe."
+  }},
+ {nr:17,b:4,titel:"Die Schnellabschaltung",zeichne:"scram",
+  bild:"Ein Messwert verlässt den erlaubten Bereich, die Magnete lassen los, die Steuerstäbe fallen in den Kern und die Leistung bricht ein.",
+  schritte:[
+   {titel:"Ein Signal genügt",dauer:7,text:"Der Reaktorschutz überwacht ständig Druck, Temperatur, Wasserstand und die Zahl der Neutronen. Verlässt ein wichtiger Wert den erlaubten Bereich, löst er automatisch die Schnellabschaltung aus."},
+   {titel:"Die Stäbe fallen",dauer:7,text:"Die Steuerstäbe hängen an Elektromagneten. Wird der Strom unterbrochen, lassen die Magnete los, und die Stäbe fallen durch ihr Gewicht in den Kern. Das dauert etwa 2 Sekunden."},
+   {titel:"Die Kettenreaktion stoppt",dauer:6,text:"Die Stäbe schlucken die Neutronen. Die Kettenreaktion bricht ab, und die Leistung aus der Spaltung fällt in Sekunden auf fast null."},
+   {titel:"Sicher auch ohne Strom",dauer:7,text:"Das Prinzip heißt fail-safe: Fällt etwas aus, geht die Anlage von selbst in den sicheren Zustand. Gerade ein Stromausfall löst die Abschaltung aus, statt sie zu verhindern."},
+   {titel:"Aber: Die Wärme bleibt",dauer:7,text:"Abgeschaltet heißt nicht kalt. Die Spaltprodukte im Brennstoff zerfallen weiter und erzeugen Wärme. Diese Nachzerfallswärme muss weiter abgeführt werden. Darum geht es in der nächsten Lektion."}
+  ],
+  merksatz:"Strom weg, Magnet lässt los, Stäbe fallen: aus in 2 Sekunden.",
+  boxen:{
+   was:"Die Schnellabschaltung stoppt die Kettenreaktion in wenigen Sekunden, indem alle Steuerstäbe auf einmal in den Kern fallen.",
+   so:"Ein Messwert liegt außerhalb der Grenzen, die Magnete lassen los, die Stäbe fallen, die Kettenreaktion bricht ab.",
+   bedeutet:"Die Abschaltung braucht keinen Strom und keinen Menschen. Sie funktioniert gerade dann, wenn etwas ausfällt.",
+   tipp:"Fachleute sagen oft RESA (Reaktorschnellabschaltung) oder englisch Scram."
+  }},
+ {nr:18,b:4,titel:"Nachzerfallswärme",zeichne:"nachwaerme",
+  bild:"Auch nach dem Abschalten erzeugen die Brennstäbe Wärme. Ein Balkendiagramm zeigt, wie sie von 6 Prozent langsam abklingt.",
+  schritte:[
+   {titel:"Abgeschaltet, aber nicht kalt",dauer:7,text:"Nach der Abschaltung gibt es keine Spaltungen mehr. Aber die Spaltprodukte im Brennstoff sind radioaktiv und zerfallen weiter. Dabei entsteht Wärme: die Nachzerfallswärme."},
+   {titel:"Am Anfang 6 Prozent",dauer:7,text:"Direkt nach der Abschaltung sind das noch rund 6 Prozent der vollen Wärmeleistung. Bei einem großen Reaktor sind das über 200 Megawatt, so viel wie 100.000 Wasserkocher."},
+   {titel:"Sie klingt langsam ab",dauer:8,text:"Die Nachwärme sinkt schnell, hört aber lange nicht auf. Nach einer Stunde sind es etwa 1,5 Prozent, nach einem Tag etwa 0,5 Prozent, nach einer Woche noch rund 0,3 Prozent."},
+   {titel:"Man kann sie nicht abschalten",dauer:6,text:"Diese Wärme lässt sich mit keinem Schalter und keinem Steuerstab stoppen. Sie muss abgeführt werden. Sonst heizt sich der Brennstoff immer weiter auf."},
+   {titel:"Ohne Kühlung droht die Kernschmelze",dauer:8,text:"Fällt die Kühlung lange aus, verdampft das Wasser, und die Brennstäbe liegen frei. Ab etwa 1.200 Grad zerfallen die Hüllrohre, bei rund 2.800 Grad schmilzt der Brennstoff. Das ist die Kernschmelze."}
+  ],
+  merksatz:"Abgeschaltet heißt nicht kalt: Die Nachwärme muss weiter gekühlt werden.",
+  boxen:{
+   was:"Nachzerfallswärme ist die Wärme, die der Brennstoff nach dem Abschalten weiter erzeugt, weil die Spaltprodukte radioaktiv zerfallen.",
+   so:"Sofort nach dem Abschalten sind es rund 6 Prozent, nach einer Stunde 1,5 Prozent, nach einem Tag 0,5 Prozent. Sie sinkt, aber sie bleibt.",
+   bedeutet:"Ein Kernkraftwerk muss auch nach dem Abschalten tage- und wochenlang gekühlt werden. Das ist der wichtigste Unterschied zu einem Kohle- oder Gaskraftwerk.",
+   tipp:"Rechenaufgabe: 3.900 Megawatt Wärmeleistung, davon 6 Prozent. Das sind 234 Megawatt."
+  }},
+ {nr:19,b:4,titel:"Die Notkühlung",zeichne:"notkuehlung",
+  bild:"Vier gleiche Kühlstränge mit eigenen Pumpen, Wasservorräten und Notstrom-Dieseln versorgen den Reaktor. Dazu ein Druckspeicher ohne Pumpe.",
+  schritte:[
+   {titel:"Mehrfach vorhanden",dauer:7,text:"Die Notkühlung gibt es nicht einmal, sondern viermal. Jeder der vier Stränge hat eigene Pumpen, eigene Rohre und einen eigenen Wasservorrat. Zwei Stränge reichen aus."},
+   {titel:"Räumlich getrennt",dauer:6,text:"Die Stränge stehen in getrennten Räumen, durch dicke Wände voneinander geschützt. Ein Brand oder eine Überflutung kann so nicht alle gleichzeitig treffen."},
+   {titel:"Eigener Strom",dauer:7,text:"Fällt das Stromnetz aus, starten Notstrom-Diesel. Auch sie sind mehrfach vorhanden. Batterien überbrücken die ersten Sekunden."},
+   {titel:"Druckspeicher ohne Pumpe",dauer:8,text:"Zusätzlich stehen Druckspeicher bereit: Tanks mit Wasser und Bor unter Gasdruck. Sinkt der Druck im Reaktor, drücken sie ihr Wasser ganz von selbst hinein, ohne Pumpe und ohne Strom."},
+   {titel:"Die Wärme braucht ein Ziel",dauer:8,text:"Die Wärme muss am Ende irgendwohin: in einen Fluss, ins Meer oder an die Luft. In Fukushima zerstörte die Flutwelle Notstrom und Kühlwasserpumpen zugleich. Genau diese Kette fiel dort aus."}
+  ],
+  merksatz:"Viermal vorhanden, getrennt aufgestellt, mit eigenem Strom.",
+  boxen:{
+   was:"Die Notkühlung führt die Wärme ab, wenn die normale Kühlung ausfällt. Sie ist mehrfach vorhanden und hat eigenen Strom.",
+   so:"Vier gleiche Stränge in getrennten Räumen, Notstrom-Diesel und dazu Druckspeicher, die ganz ohne Pumpe arbeiten.",
+   bedeutet:"Sicherheit entsteht hier durch drei Ideen: mehrfach vorhanden, räumlich getrennt, verschiedene Techniken. Ein einzelner Fehler darf nie alles lahmlegen.",
+   tipp:"Die Zahlen gelten für die letzten deutschen Druckwasserreaktoren. Andere Anlagen haben zwei oder drei Stränge."
+  }},
+ {nr:20,b:4,titel:"Tschernobyl und Fukushima: was schiefging",zeichne:"unfaelle",
+  bild:"Tschernobyl: Die Leistung schießt in Sekunden nach oben. Fukushima: Eine Flutwelle überspült die Schutzmauer und flutet die Notstrom-Diesel.",
+  schritte:[
+   {titel:"Tschernobyl 1986: ein anderer Reaktor",dauer:8,text:"Der Reaktor in Tschernobyl war eine sowjetische Bauart mit Graphit als Moderator. Er hatte eine gefährliche Eigenschaft: Entstand mehr Dampf, stieg die Leistung, statt zu sinken. Einen Sicherheitsbehälter gab es nicht."},
+   {titel:"Der Versuch",dauer:9,text:"In der Nacht zum 26. April 1986 lief ein Versuch bei sehr niedriger Leistung. Dafür wurden Schutzsysteme abgeschaltet und fast alle Steuerstäbe gezogen. Dann stieg die Leistung in Sekunden auf ein Vielfaches. Eine Dampfexplosion zerstörte den Reaktor, der Graphit brannte tagelang."},
+   {titel:"Fukushima 2011: Die Abschaltung klappte",dauer:7,text:"Am 11. März 2011 erschütterte ein schweres Erdbeben Japan. Die Reaktoren in Fukushima schalteten sich automatisch ab, wie vorgesehen. Die Notstrom-Diesel liefen an und kühlten."},
+   {titel:"Die Flutwelle",dauer:9,text:"Knapp eine Stunde später kam eine rund 14 Meter hohe Flutwelle. Die Schutzmauer war dafür viel zu niedrig. Das Wasser überflutete die Notstrom-Diesel. Ohne Strom gab es keine Kühlung mehr. In drei Reaktoren schmolz der Kern durch die Nachwärme."},
+   {titel:"Was man daraus lernt",dauer:9,text:"Die Unfälle hatten verschiedene Ursachen. In Tschernobyl waren es die Bauart und der Verstoß gegen Regeln, in Fukushima der fehlende Schutz gegen eine Flutwelle. Beide zeigen: Die Kettenreaktion zu stoppen reicht nicht. Die Wärme muss immer abgeführt und die Radioaktivität eingeschlossen werden."}
+  ],
+  merksatz:"Tschernobyl: Leistung außer Kontrolle. Fukushima: Kühlung fiel aus.",
+  boxen:{
+   was:"Tschernobyl 1986 und Fukushima 2011 sind die beiden schwersten Unfälle in Kernkraftwerken. Bei beiden wurden große Mengen radioaktiver Stoffe frei.",
+   so:"Tschernobyl: Die Leistung geriet außer Kontrolle. Fukushima: Die Abschaltung klappte, aber die Kühlung der Nachwärme fiel aus.",
+   bedeutet:"Nach Fukushima beschloss Deutschland 2011, seine Kernkraftwerke abzuschalten. Die letzten drei gingen im April 2023 vom Netz.",
+   tipp:"Unfälle werden auf der Skala INES von 0 bis 7 eingestuft. Tschernobyl und Fukushima sind die einzigen mit der höchsten Stufe 7."
+  }},
+ {nr:21,b:5,titel:"Alpha, Beta, Gamma",zeichne:"strahlung",
+  bild:"Drei Strahlenarten treffen auf Papier, Aluminium und Blei: Alpha stoppt am Papier, Beta am Aluminium, Gamma wird erst vom Blei geschwächt.",
+  schritte:[
+   {titel:"Instabile Kerne strahlen",dauer:6,text:"Manche Atomkerne sind instabil. Sie wandeln sich von selbst um und senden dabei Strahlung aus. Das nennt man Radioaktivität. Es gibt drei wichtige Arten."},
+   {titel:"Alpha",dauer:7,text:"Alpha-Strahlung besteht aus kleinen Paketen von 2 Protonen und 2 Neutronen. Sie ist kräftig, kommt aber nicht weit: Ein Blatt Papier oder die Haut hält sie auf. Gefährlich wird sie, wenn man den Stoff einatmet oder verschluckt."},
+   {titel:"Beta",dauer:6,text:"Beta-Strahlung besteht aus schnellen Elektronen. Sie durchdringt Papier, wird aber von einigen Millimetern Aluminium gestoppt."},
+   {titel:"Gamma",dauer:7,text:"Gamma-Strahlung ist eine Welle wie Licht, nur viel energiereicher. Sie durchdringt Papier und Blech. Erst dickes Blei oder viel Beton schwächen sie stark ab."},
+   {titel:"Abstand, Abschirmung, Zeit",dauer:8,text:"Daraus folgen die drei Schutzregeln: Abstand halten, Abschirmung nutzen, nur kurz bleiben. Die Dosis wird in Sievert gemessen. Jeder Mensch bekommt aus der Natur etwa 2 Millisievert pro Jahr ab."}
+  ],
+  merksatz:"Alpha stoppt Papier, Beta stoppt Aluminium, Gamma braucht Blei.",
+  boxen:{
+   was:"Radioaktive Strahlung entsteht, wenn sich instabile Atomkerne umwandeln. Die drei wichtigsten Arten heißen Alpha, Beta und Gamma.",
+   so:"Alpha: Papier stoppt sie. Beta: einige Millimeter Aluminium. Gamma: Nur dickes Blei oder Beton schwächen sie.",
+   bedeutet:"Im Kraftwerk schirmen Wasser, Stahl und Beton die Strahlung ab. Wer dort arbeitet, trägt ein Messgerät, das die Dosis mitzählt.",
+   tipp:"Strahlung gibt es auch ohne Kernkraft: aus dem Boden, aus dem Weltall, beim Röntgen. Entscheidend ist immer die Dosis."
+  }},
+ {nr:22,b:5,titel:"Die Halbwertszeit",zeichne:"halbwert",
+  bild:"100 Kerne zerfallen nach und nach: nach jeder Halbwertszeit ist die Hälfte übrig. Daraus ergibt sich eine fallende Kurve.",
+  schritte:[
+   {titel:"Zerfall ist Zufall",dauer:6,text:"Wann ein einzelner instabiler Kern zerfällt, ist reiner Zufall. Bei sehr vielen Kernen gibt es aber eine feste Regel."},
+   {titel:"Nach einer Halbwertszeit: die Hälfte",dauer:7,text:"Nach einer bestimmten Zeit ist immer die Hälfte der Kerne zerfallen. Diese Zeit heißt Halbwertszeit. Sie ist für jeden Stoff anders."},
+   {titel:"Und wieder die Hälfte",dauer:8,text:"Nach der zweiten Halbwertszeit ist von der Hälfte wieder die Hälfte übrig, also ein Viertel. Dann ein Achtel, ein Sechzehntel und so weiter. Ganz null wird es nie."},
+   {titel:"Die Kurve",dauer:7,text:"Zeichnet man das auf, entsteht immer dieselbe Kurve. Nach 10 Halbwertszeiten ist nur noch etwa ein Tausendstel übrig."},
+   {titel:"Von Tagen bis Jahrmillionen",dauer:9,text:"Die Halbwertszeiten sind sehr verschieden: Jod-131 hat 8 Tage, Cäsium-137 rund 30 Jahre, Plutonium-239 rund 24.000 Jahre. Kurzlebige Stoffe strahlen stark, sind aber bald weg. Langlebige strahlen schwächer, aber sehr lange."}
+  ],
+  merksatz:"Nach jeder Halbwertszeit ist nur noch die Hälfte übrig.",
+  boxen:{
+   was:"Die Halbwertszeit ist die Zeit, nach der die Hälfte der Kerne eines radioaktiven Stoffes zerfallen ist.",
+   so:"Nach 1 Halbwertszeit ist die Hälfte übrig, nach 2 ein Viertel, nach 3 ein Achtel. Immer wieder halbieren.",
+   bedeutet:"Jod-131 ist nach wenigen Monaten praktisch verschwunden. Plutonium-239 strahlt nach 24.000 Jahren noch halb so stark. Deshalb muss Atommüll so lange sicher lagern.",
+   tipp:"Rechenaufgabe: Cäsium-137 hat 30 Jahre Halbwertszeit. Nach 90 Jahren ist noch ein Achtel übrig, das sind 12,5 Prozent."
+  }},
+ {nr:23,b:5,titel:"Abklingbecken und Castor",zeichne:"castor",
+  bild:"Ein verbrauchtes Brennelement wandert vom Reaktor ins Abklingbecken, später in einen Castor-Behälter und ins Zwischenlager.",
+  schritte:[
+   {titel:"Raus aus dem Reaktor",dauer:7,text:"Nach etwa 4 Jahren ist ein Brennelement verbraucht. Es strahlt jetzt sehr stark und erzeugt weiter Wärme. Es wird unter Wasser aus dem Reaktor gehoben und direkt ins Abklingbecken gebracht."},
+   {titel:"Das Abklingbecken",dauer:7,text:"Im Abklingbecken stehen die Brennelemente unter mehreren Metern Wasser. Das Wasser kühlt sie und schirmt gleichzeitig die Strahlung ab. Dort bleiben sie mindestens 5 Jahre."},
+   {titel:"Der Castor",dauer:8,text:"Danach kommen sie in einen Castor-Behälter. Er ist rund 6 Meter lang, wiegt beladen über 100 Tonnen und hat Wände aus etwa 40 Zentimeter dickem Gusseisen. Kühlrippen außen geben die Wärme an die Luft ab."},
+   {titel:"Das Zwischenlager",dauer:8,text:"Die Castoren stehen in Zwischenlagern, meist direkt neben den Kraftwerken. Das sind Hallen mit dicken Wänden. Die Luft strömt von selbst an den Behältern vorbei und kühlt sie. In Deutschland werden es am Ende weit über 1.000 Behälter sein."},
+   {titel:"Nur eine Zwischenlösung",dauer:7,text:"Ein Zwischenlager ist für einige Jahrzehnte gedacht. Der Abfall strahlt aber viele tausend Jahre. Deshalb braucht es am Ende ein Endlager tief unter der Erde. Darum geht es in der nächsten Lektion."}
+  ],
+  merksatz:"Erst ins Wasser, dann in den Castor, dann ins Zwischenlager.",
+  boxen:{
+   was:"Verbrauchte Brennelemente kühlen erst jahrelang im Abklingbecken ab. Danach lagern sie in Castor-Behältern in einem Zwischenlager.",
+   so:"Reaktor, Abklingbecken (mindestens 5 Jahre), Castor, Zwischenlager (Jahrzehnte), Endlager.",
+   bedeutet:"Der Castor ist Transport- und Lagerbehälter zugleich. Er muss dicht bleiben, abschirmen und die Wärme loswerden, ganz ohne Strom und Pumpen.",
+   tipp:"Castor ist eine Abkürzung aus dem Englischen: cask for storage and transport of radioactive material."
+  }},
+ {nr:24,b:5,titel:"Das Endlager",zeichne:"endlager",
+  bild:"Schnitt durch den Untergrund: Ein Schacht führt mehrere hundert Meter tief zu Kammern im Gestein, in denen die Behälter liegen.",
+  schritte:[
+   {titel:"Wohin mit dem Abfall?",dauer:7,text:"Der hochradioaktive Abfall muss für sehr lange Zeit von Menschen und Umwelt ferngehalten werden. In Deutschland sind das am Ende rund 27.000 Kubikmeter, verpackt in weit über 1.000 Behälter. Fachleute weltweit halten ein Lager tief unter der Erde für die sicherste Lösung."},
+   {titel:"Tief im Gestein",dauer:7,text:"Ein Endlager liegt mehrere hundert Meter tief in einer stabilen Gesteinsschicht. Dort gibt es kein Wetter und kaum Veränderung. Schächte führen hinab zu den Kammern."},
+   {titel:"Drei mögliche Gesteine",dauer:7,text:"In Deutschland kommen drei Gesteine infrage: Steinsalz, Tongestein und Kristallingestein wie Granit. Salz und Ton umschließen den Abfall dicht, Granit ist besonders hart und fest."},
+   {titel:"Wieder mehrere Barrieren",dauer:7,text:"Auch im Endlager schützen mehrere Barrieren: der Behälter, eine Füllung aus Ton oder Salz und das umgebende Gestein. Zusammen sollen sie den Abfall für 1 Million Jahre einschließen."},
+   {titel:"Die Suche läuft",dauer:8,text:"Ein Standort ist in Deutschland noch nicht gefunden. Seit 2017 wird nach einem festen Verfahren im ganzen Land gesucht. Die Entscheidung wird erst in einigen Jahrzehnten erwartet. Finnland ist weiter: Dort wurde das erste Endlager dieser Art gebaut."}
+  ],
+  merksatz:"Tief im Gestein, mehrere Barrieren, für 1 Million Jahre.",
+  boxen:{
+   was:"Ein Endlager ist ein Bergwerk tief unter der Erde, in dem hochradioaktiver Abfall dauerhaft eingeschlossen wird.",
+   so:"Mehrere hundert Meter tief, in Salz, Ton oder Granit, mit mehreren Barrieren: Behälter, Füllung, Gestein.",
+   bedeutet:"Der Abfall soll 1 Million Jahre sicher eingeschlossen bleiben. Das ist länger, als es den modernen Menschen gibt. Darum ist die Suche so gründlich und dauert so lange.",
+   tipp:"Für schwach- und mittelradioaktiven Abfall gibt es in Deutschland schon einen genehmigten Ort: den Schacht Konrad bei Salzgitter."
+  }},
+ {nr:25,b:5,titel:"Rückbau und Kernkraft in Deutschland",zeichne:"rueckbau",
+  bild:"Der Anteil der Kernkraft am deutschen Strom von 1961 bis 2023, dann ein Kraftwerk, das Stück für Stück zurückgebaut wird.",
+  schritte:[
+   {titel:"Von 1961 bis 2023",dauer:7,text:"1961 lieferte in Kahl am Main das erste deutsche Kernkraftwerk Strom. In den 1990er-Jahren kam knapp ein Drittel des deutschen Stroms aus Kernenergie."},
+   {titel:"Der Ausstieg",dauer:8,text:"Nach dem Unfall von Fukushima beschloss der Bundestag 2011 den Ausstieg. Acht Kraftwerke wurden sofort stillgelegt, die übrigen schrittweise. Am 15. April 2023 gingen die letzten drei vom Netz: Isar 2, Emsland und Neckarwestheim 2."},
+   {titel:"Abschalten ist nicht das Ende",dauer:7,text:"Ein abgeschaltetes Kraftwerk wird zurückgebaut. Zuerst kommen die Brennelemente ins Abklingbecken und später in Castoren. Dann wird die Anlage von innen nach außen zerlegt."},
+   {titel:"Stück für Stück",dauer:8,text:"Jedes Teil wird gemessen. Der allergrößte Teil, vor allem Beton und Stahl, ist nicht radioaktiv belastet und kann normal verwertet werden. Nur wenige Prozent sind radioaktiver Abfall. Ein Rückbau dauert meist 15 bis 20 Jahre."},
+   {titel:"Was bleibt",dauer:8,text:"Am Ende steht wieder eine grüne Wiese oder ein neues Gewerbegebiet. Was bleibt, ist der radioaktive Abfall in den Zwischenlagern, bis ein Endlager fertig ist. Weltweit laufen weiterhin über 400 Reaktoren."}
+  ],
+  merksatz:"1961 bis 2023: Deutschlands Kernkraft ist abgeschaltet, der Abfall bleibt.",
+  boxen:{
+   was:"Rückbau heißt: Ein abgeschaltetes Kernkraftwerk wird Stück für Stück zerlegt, gemessen und entsorgt.",
+   so:"Brennelemente heraus, Anlage von innen nach außen zerlegen, jedes Teil messen, Gebäude abreißen.",
+   bedeutet:"Deutschland erzeugt seit April 2023 keinen Strom mehr aus Kernenergie. Der Rückbau und die Lagerung des Abfalls beschäftigen das Land aber noch Jahrzehnte.",
+   tipp:"Andere Länder gehen andere Wege: Frankreich erzeugt den größten Teil seines Stroms mit Kernkraft, und mehrere Länder bauen neue Reaktoren."
+  }}
+];
+const fertig=l=>!!l.schritte;
+const zwei=n=>String(n).padStart(2,"0");
+const bereich=id=>BEREICHE.find(b=>b.id===id);
+let gesehen=lies("kk-gesehen",[]); if(!Array.isArray(gesehen))gesehen=[];
+
+const ICONS={
+ atom:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="24" cy="24" r="3.5" fill="currentColor"/><ellipse cx="24" cy="24" rx="20" ry="8"/><ellipse cx="24" cy="24" rx="20" ry="8" transform="rotate(60 24 24)"/><ellipse cx="24" cy="24" rx="20" ry="8" transform="rotate(120 24 24)"/></svg>',
+ reaktor:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 14a12 8 0 0 1 24 0v20a12 8 0 0 1-24 0z"/><path d="M19 20v16M24 16v20M29 20v16"/><path d="M6 24h6M36 24h6"/></svg>',
+ turbine:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="24" cy="24" r="19"/><circle cx="24" cy="24" r="3" fill="currentColor"/><path d="M24 21c-1-7 2-12 7-13M26.6 25.5c6.500 2.600 9.300 7.700 7.700 12.600M21.400 25.500c-5.500 4.400-11.300 4.300-14.700.5"/></svg>',
+ schild:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M24 5l16 6v12c0 10-7 17-16 20C15 40 8 33 8 23V11z"/><path d="M17 24l5 5 9-10"/></svg>',
+ strahlung:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor"><circle cx="24" cy="24" r="20" stroke-width="2.2"/><circle cx="24" cy="24" r="9" stroke-width="10" stroke-dasharray="9.42 9.42" transform="rotate(-30 24 24)"/><circle cx="24" cy="24" r="2.600" fill="currentColor" stroke="none"/></svg>'
+};
+const SYM={
+ play:'<svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 3l12 7-12 7z"/></svg>',
+ pause:'<svg viewBox="0 0 20 20" fill="currentColor"><path d="M4 3h4v14H4zM12 3h4v14h-4z"/></svg>',
+ neu:'<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10a6 6 0 1 0 2-4.500"/><path d="M4 3v4h4"/></svg>'
+};
+
+/* ---------- Farbschema ---------- */
+const wurzel=document.documentElement, vorgabe=wurzel.getAttribute("data-theme");
+let thema=lies("kk-thema","auto");
+function setzeThema(t){
+  thema=t; schreib("kk-thema",t);
+  if(t==="dunkel")wurzel.setAttribute("data-theme","dark");
+  else if(t==="hell")wurzel.setAttribute("data-theme","light");
+  else if(vorgabe)wurzel.setAttribute("data-theme",vorgabe); else wurzel.removeAttribute("data-theme");
+  document.querySelectorAll("[data-thema]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.thema===t));
+  farbenLesen(); if(P)zeichne(); else if(Q&&location.hash==="#quiz")zeigeQuiz();
+}
+let C={};
+function farbenLesen(){
+  const s=getComputedStyle(wurzel);
+  ["bg","flaeche","flaeche2","linie","text","grau","blau","gruen","gold","rot","violett"].forEach(n=>C[n]=s.getPropertyValue("--"+n).trim());
+}
+document.querySelectorAll("[data-thema]").forEach(b=>b.onclick=()=>setzeThema(b.dataset.thema));
+try{matchMedia("(prefers-color-scheme:dark)").addEventListener("change",()=>{farbenLesen();if(P)zeichne()})}catch(e){}
+
+/* ---------- Ansichten ---------- */
+const inhalt=document.getElementById("inhalt"), seite=document.getElementById("seite");
+function fortschritt(b){const ls=LEKTIONEN.filter(l=>l.b===b.id);const n=ls.filter(l=>gesehen.includes(l.nr)).length;return{n,alle:ls.length}}
+
+function zeigeStart(){
+  P=null;
+  inhalt.innerHTML=`<div class="titelblock"><span class="klein">5 Bereiche · 25 Lektionen</span><h1>Wie ein Kernkraftwerk funktioniert</h1>
+  <p>Jede Lektion ist ein kurzes Erklärbild, das sich Schritt für Schritt aufbaut. Du bestimmst das Tempo.</p></div>
+  <div class="bento">${BEREICHE.map((b,i)=>{const f=fortschritt(b);return `<a class="kachel${i===0?" breit":""}" style="--akz:var(--${b.farbe})" href="#bereich-${b.id}">
+    ${ICONS[b.icon]}<span class="klein">Bereich ${b.id}</span><h2>${b.name}</h2><p>${b.kurz}</p>
+    <span class="balken"><i><b style="width:${100*f.n/f.alle}%"></b></i>${f.n}/${f.alle}</span></a>`}).join("")}
+   <a class="kachel" style="--akz:var(--text)" href="#quiz"><span class="klein">Quiz</span><h2>Teste dein Wissen</h2><p>10 zufällige Fragen aus allen Bereichen: Wissen, Bilder und kleine Rechenaufgaben.</p>
+    <span class="balken">Bestwert: ${lies("kk-quiz-best",0)} von 10</span></a>
+  </div>`;
+}
+function zeigeBereich(id){
+  P=null; const b=bereich(id); if(!b)return zeigeStart();
+  inhalt.innerHTML=`<a class="zurueck" href="#start">← Startseite</a>
+  <div class="titelblock" style="--akz:var(--${b.farbe})"><span class="klein" style="color:var(--akz)">Bereich ${b.id}</span><h1>${b.name}</h1><p>${b.kurz}</p></div>
+  <div class="karten" style="--akz:var(--${b.farbe})">${LEKTIONEN.filter(l=>l.b===id).map(l=>
+   `<a class="karte${fertig(l)?"":" aus"}" href="#lektion-${zwei(l.nr)}"><span class="klein"><span>Lektion ${l.nr}</span><span>${gesehen.includes(l.nr)?'<span class="haken">✓ gesehen</span>':fertig(l)?"":"folgt"}</span></span><b>${l.titel}</b></a>`).join("")}</div>`;
+}
+function nachbar(l,d){
+  const n=LEKTIONEN.find(x=>x.nr===l.nr+d);
+  if(!n)return `<a class="aus"><span class="klein">${d<0?"Anfang":"Ende"}</span></a>`;
+  return `<a class="${fertig(n)?"":"aus"}" href="#lektion-${zwei(n.nr)}"><span class="klein">${d<0?"← Zurück":"Weiter →"}${fertig(n)?"":" · folgt"}</span>${n.titel}</a>`;
+}
+function zeigeLektion(nr){
+  const l=LEKTIONEN.find(x=>x.nr===nr); if(!l||!fertig(l))return zeigeStart();
+  const b=bereich(l.b), S=l.schritte, total=S.reduce((a,s)=>a+s.dauer,0);
+  inhalt.innerHTML=`<div style="--akz:var(--${b.farbe})">
+  <a class="zurueck" href="#bereich-${b.id}">← ${b.name}</a>
+  <div class="titelblock"><span class="klein" style="color:var(--akz)">Lektion ${l.nr}</span><h1>${l.titel}</h1></div>
+  <div class="buehne"><canvas id="cv" role="img" aria-label="${l.bild}"></canvas></div>
+  <div class="steuer">
+   <div class="reihe"><button class="rund haupt" id="pl" type="button" aria-label="Abspielen">${SYM.play}</button>
+    <input type="range" id="sp" min="0" max="${total}" step="0.01" value="0" aria-label="Spulen">
+    <button class="rund" id="neu" type="button" aria-label="Neustart">${SYM.neu}</button></div>
+   <div class="reihe" id="chips">${S.map((s,i)=>`<button class="chip" type="button" data-s="${i}" aria-label="Schritt ${i+1}: ${s.titel}">${i+1}</button>`).join("")}
+    <span class="tempo"><span class="klein">Tempo</span>${[[.5,"½×"],[1,"1×"],[2,"2×"]].map(([v,t])=>`<button class="chip" type="button" data-tempo="${v}" aria-label="Geschwindigkeit ${t}">${t}</button>`).join("")}</span></div>
+  </div>
+  <section class="erkl" aria-live="polite"><span class="klein" id="sn"></span><h2 id="st"></h2><p id="sx"></p></section>
+  <div class="merk"><span class="klein" style="color:var(--akz)">Merksatz</span><p>${l.merksatz}</p></div>
+  <div class="boxen">
+   <div class="box" style="--f:var(--blau)"><span class="klein">Was ist das?</span><p>${l.boxen.was}</p></div>
+   <div class="box" style="--f:var(--gruen)"><span class="klein">So geht’s</span><p>${l.boxen.so}</p></div>
+   <div class="box" style="--f:var(--gold)"><span class="klein">Was bedeutet es?</span><p>${l.boxen.bedeutet}</p></div>
+   <div class="box" style="--f:var(--rot)"><span class="klein">Tipp</span><p>${l.boxen.tipp}</p></div>
+  </div>
+  <div class="weiter">${nachbar(l,-1)}${nachbar(l,1)}</div></div>`;
+  starte(l,b,total);
+}
+function baueSeite(filter){
+  const f=(filter||"").toLowerCase(), hier=location.hash;
+  const alt=seite.querySelector("input"), wert=alt?alt.value:"";
+  seite.innerHTML=`<input id="suche" type="search" placeholder="Lektion suchen" aria-label="Lektion suchen"><a class="${hier==="#quiz"?"hier":""}" href="#quiz"><b>Quiz</b> · 10 Fragen</a>`+BEREICHE.map(b=>{
+    const ls=LEKTIONEN.filter(l=>l.b===b.id&&l.titel.toLowerCase().includes(f)); if(!ls.length)return"";
+    return `<h3 style="--akz:var(--${b.farbe})">${b.name}</h3>`+ls.map(l=>`<a class="${fertig(l)?"":"aus"}${hier==="#lektion-"+zwei(l.nr)?" hier":""}" href="#lektion-${zwei(l.nr)}">${zwei(l.nr)} · ${l.titel}${gesehen.includes(l.nr)?' <span class="haken">✓</span>':""}</a>`).join("")}).join("");
+  const s=document.getElementById("suche"); s.value=filter===undefined?wert:filter;
+  s.oninput=()=>{const p=s.selectionStart;baueSeite(s.value);const n=document.getElementById("suche");n.focus();n.setSelectionRange(p,p)};
+}
+function ansicht(){
+  const h=location.hash.slice(1)||"start"; let m;
+  if((m=h.match(/^bereich-(\d)$/)))zeigeBereich(+m[1]);
+  else if((m=h.match(/^lektion-(\d+)$/)))zeigeLektion(+m[1]);
+  else if(h==="quiz")zeigeQuiz();
+  else zeigeStart();
+  baueSeite(""); window.scrollTo(0,0);
+}
+
+/* ---------- Quiz ---------- */
+/* l = Lektion, f = Frage, a = Antworten (die ERSTE ist richtig, gemischt wird beim Start), e = Erklärung, bild = [Zeichnung, Schritt] */
+const FRAGEN=[
+ {l:1,f:"Woraus besteht ein Atomkern?",a:["Aus Protonen und Neutronen","Aus Elektronen und Protonen","Nur aus Neutronen","Aus Elektronen und Neutronen"],e:"Im Kern sitzen Protonen und Neutronen. Die Elektronen bilden die Hülle."},
+ {l:1,f:"Was legt fest, welcher Stoff ein Atom ist?",a:["Die Zahl der Protonen","Die Zahl der Neutronen","Die Größe der Hülle","Das Gewicht des Atoms"],e:"1 Proton ist Wasserstoff, 6 sind Kohlenstoff, 92 sind Uran."},
+ {l:2,f:"Wie viel Uran-235 steckt in Natururan?",a:["0,7 Prozent","4 Prozent","50 Prozent","90 Prozent"],e:"Nur 7 von 1.000 Kernen im Natururan sind Uran-235."},
+ {l:2,f:"Auf wie viel Uran-235 wird Brennstoff für Reaktoren angereichert?",a:["Auf 3 bis 5 Prozent","Auf 0,7 Prozent","Auf 20 bis 30 Prozent","Auf rund 90 Prozent"],e:"Reaktoren brauchen 3 bis 5 Prozent. Rund 90 Prozent wären Bomben-Uran."},
+ {l:2,f:"Rechenaufgabe: Uran-235 hat 92 Protonen. Wie viele Neutronen hat der Kern?",a:["143","92","235","327"],e:"235 Teilchen minus 92 Protonen ergibt 143 Neutronen."},
+ {l:3,f:"Was ist hier zu sehen?",bild:["spaltung",3],a:["Ein Uran-Kern zerbricht in zwei Kerne und Neutronen","Zwei Kerne verschmelzen zu einem","Ein Atom verliert seine Elektronen","Wasser verdampft"],e:"Das ist die Kernspaltung: zwei Bruchstücke und freie Neutronen."},
+ {l:3,f:"Was wird bei einer Kernspaltung frei?",a:["Zwei kleinere Kerne, Neutronen und Wärme","Nur Elektronen","Ein größerer Kern und Licht","Wasserstoff und Sauerstoff"],e:"Neutron rein, zwei Kerne und neue Neutronen raus, dazu Wärme."},
+ {l:3,f:"Rechenaufgabe: Barium-141, Krypton-92 und 3 Neutronen. Wie viele Teilchen sind das zusammen?",a:["236","233","235","238"],e:"141 + 92 + 3 = 236. Genau so viele hatte der Uran-236-Kern."},
+ {l:4,f:"Was zeigt dieses Bild?",bild:["kette",2],a:["Eine ungebremste Kettenreaktion","Eine Schnellabschaltung","Die Halbwertszeit","Den Wasserkreislauf"],e:"Aus 1 Spaltung werden 2, dann 4, dann 8: Die Zahl wächst wie eine Lawine."},
+ {l:4,f:"Rechenaufgabe: Die Zahl der Spaltungen verdoppelt sich jede Runde, beginnend mit 1. Wie viele sind es nach 10 Runden?",a:["1.024","20","100","512"],e:"Zehnmal verdoppeln ergibt 2 hoch 10, also 1.024."},
+ {l:5,f:"Was sagt die Formel E = m · c²?",a:["Aus Masse kann Energie werden","Energie geht verloren","Masse wird immer schwerer","Licht hat kein Tempo"],e:"Bei der Spaltung verschwindet etwa ein Tausendstel der Masse und wird zu Energie."},
+ {l:5,f:"Wie viel Steinkohle ersetzt 1 Kilogramm vollständig gespaltenes Uran-235 ungefähr?",a:["2.700 Tonnen","27 Kilogramm","270 Kilogramm","27 Tonnen"],e:"Rund 2.700 Tonnen, das sind etwa 45 volle Güterwagen."},
+ {l:6,f:"Was ist ein Brennelement?",a:["Ein Bündel aus 200 bis 300 Brennstäben","Eine einzelne Uran-Tablette","Der Deckel des Reaktors","Ein Steuerstab"],e:"Tabletten im Rohr sind ein Brennstab, ein Bündel Brennstäbe ist ein Brennelement."},
+ {l:7,f:"Wozu dient der Moderator?",a:["Er bremst schnelle Neutronen ab","Er schluckt Neutronen","Er erzeugt den Strom","Er kühlt die Turbine"],e:"Nur langsame Neutronen spalten Uran-235 gut. Das Wasser bremst sie ab."},
+ {l:7,f:"Was passiert, wenn das Wasser im Reaktor zu heiß wird oder verdampft?",a:["Es bremst schlechter, die Leistung sinkt","Die Leistung steigt stark an","Es ändert sich nichts","Die Steuerstäbe fallen heraus"],e:"Weniger Bremswirkung heißt weniger Spaltungen. Das ist eine eingebaute Sicherheit."},
+ {l:8,f:"Die violetten Stäbe stecken ganz im Kern. Was bedeutet das?",bild:["steuerstab",3],a:["Die Kettenreaktion ist aus","Der Reaktor läuft mit voller Leistung","Der Reaktor wird hochgefahren","Das Wasser kocht"],e:"Ganz eingefahrene Steuerstäbe schlucken so viele Neutronen, dass die Kettenreaktion abbricht."},
+ {l:8,f:"Was passiert, wenn man die Steuerstäbe ein Stück herauszieht?",a:["Die Leistung steigt","Die Leistung sinkt","Nichts","Der Reaktor schaltet sich ab"],e:"Stäbe raus: mehr Neutronen bleiben übrig, es gibt mehr Spaltungen."},
+ {l:9,f:"Warum steht das Wasser im Druckwasserreaktor unter 155 bar?",a:["Damit es bei 325 Grad flüssig bleibt","Damit es schneller verdampft","Damit sich die Turbine dreht","Damit die Steuerstäbe halten"],e:"Unter hohem Druck kocht Wasser erst bei viel höherer Temperatur."},
+ {l:10,f:"Was bedeutet „kritisch“ bei einem Reaktor?",a:["Normalbetrieb: Die Leistung bleibt gleich","Gefahr: Der Reaktor gerät außer Kontrolle","Der Reaktor ist abgeschaltet","Die Kühlung ist ausgefallen"],e:"Kritisch heißt k = 1: Jede Spaltung löst genau eine neue aus."},
+ {l:10,f:"Rechenaufgabe: 100 Spaltungen, k = 0,9. Wie viele sind es nach zwei Runden?",a:["81","90","80","99"],e:"100 mal 0,9 ist 90. Und 90 mal 0,9 ist 81."},
+ {l:11,f:"Welche Bauart zeigt dieses Schema?",bild:["dwr",4],a:["Einen Druckwasserreaktor mit zwei Kreisläufen","Einen Siedewasserreaktor mit einem Kreislauf","Ein Kohlekraftwerk","Ein Zwischenlager"],e:"Man erkennt den Dampferzeuger zwischen Reaktor und Turbine. Den hat nur der Druckwasserreaktor."},
+ {l:11,f:"Warum hat der Druckwasserreaktor zwei getrennte Kreisläufe?",a:["Damit die Turbine nur sauberen Dampf bekommt","Damit das Wasser schneller fließt","Weil ein Kreislauf zu kurz wäre","Damit der Kühlturm kleiner wird"],e:"Das leicht radioaktive Reaktorwasser bleibt im Sicherheitsbehälter."},
+ {l:12,f:"Was ist das Besondere am Siedewasserreaktor?",a:["Das Wasser kocht direkt im Reaktor","Er braucht kein Wasser","Er hat drei Dampferzeuger","Er arbeitet ohne Turbine"],e:"Der Dampf geht ohne Umweg zur Turbine. Es gibt nur einen Kreislauf."},
+ {l:13,f:"Was passiert im Dampferzeuger?",a:["Reaktorwasser gibt Wärme ab, außen entsteht Dampf","Uran wird gespalten","Dampf wird wieder zu Wasser","Strom wird erzeugt"],e:"Innen fließt heißes Reaktorwasser, außen verdampft das Speisewasser. Beide mischen sich nie."},
+ {l:14,f:"Was macht der Generator?",a:["Er macht aus der Drehung Strom","Er macht aus Wasser Dampf","Er kühlt den Reaktor","Er bremst die Neutronen"],e:"In ihm dreht sich ein Magnet in einer Kupferspule, wie bei einem Fahrrad-Dynamo."},
+ {l:14,f:"Rechenaufgabe: Die Welle dreht sich 1.500-mal pro Minute. Wie oft ist das pro Sekunde?",a:["25-mal","15-mal","50-mal","150-mal"],e:"1.500 geteilt durch 60 Sekunden ergibt 25."},
+ {l:15,f:"Woraus besteht die Wolke über dem Kühlturm?",bild:["kuehlturm",3],a:["Aus reinem Wasserdampf","Aus Rauch","Aus radioaktivem Gas","Aus Kohlendioxid"],e:"Das Kühlwasser hat nie Kontakt mit dem Reaktor. Die Wolke ist nicht radioaktiv."},
+ {l:15,f:"Wie viel der Wärme wird in einem Kernkraftwerk zu Strom?",a:["Etwa ein Drittel","Fast alles","Etwa die Hälfte","Nur ein Zehntel"],e:"Zwei Drittel gehen als Abwärme über Kühlturm oder Fluss weg."},
+ {l:16,f:"Welche Reihenfolge der Barrieren stimmt, von innen nach außen?",a:["Tablette, Hüllrohr, Druckbehälter, Stahlkugel, Betonhülle","Betonhülle, Stahlkugel, Druckbehälter, Hüllrohr, Tablette","Hüllrohr, Tablette, Betonhülle, Druckbehälter, Stahlkugel","Tablette, Betonhülle, Hüllrohr, Stahlkugel, Druckbehälter"],e:"Wie Zwiebelschalen: Versagt eine Hülle, hält die nächste."},
+ {l:17,f:"Warum fallen die Steuerstäbe bei einem Stromausfall von selbst in den Kern?",a:["Weil die Elektromagnete sie dann loslassen","Weil ein Motor sie hineindrückt","Weil das Wasser sie ansaugt","Weil jemand einen Hebel zieht"],e:"Die Stäbe hängen an Magneten. Ohne Strom lassen die Magnete los, die Schwerkraft erledigt den Rest."},
+ {l:18,f:"Was ist Nachzerfallswärme?",a:["Wärme, die der Brennstoff nach dem Abschalten weiter erzeugt","Wärme aus dem Kühlturm","Wärme, die beim Hochfahren entsteht","Wärme der Turbine"],e:"Die Spaltprodukte zerfallen weiter. Diese Wärme lässt sich nicht abschalten."},
+ {l:18,f:"Rechenaufgabe: 3.900 Megawatt Wärmeleistung, davon 6 Prozent. Wie viel ist das?",a:["234 Megawatt","39 Megawatt","650 Megawatt","23,4 Megawatt"],e:"3.900 mal 0,06 ergibt 234 Megawatt."},
+ {l:19,f:"Wie war die Notkühlung der letzten deutschen Druckwasserreaktoren ausgelegt?",a:["4 Stränge vorhanden, 2 reichen aus","1 Strang vorhanden, 1 reicht aus","2 Stränge vorhanden, beide nötig","4 Stränge vorhanden, alle 4 nötig"],e:"Mehrfach vorhanden und räumlich getrennt: Ein einzelner Fehler legt nicht alles lahm."},
+ {l:20,f:"Was fiel in Fukushima aus?",a:["Die Kühlung, weil die Flutwelle den Notstrom zerstörte","Die Schnellabschaltung","Die Steuerstäbe klemmten","Der Kühlturm stürzte ein"],e:"Die Abschaltung klappte. Ohne Strom konnte aber die Nachwärme nicht mehr abgeführt werden."},
+ {l:20,f:"Was war am Reaktor in Tschernobyl anders als bei Wasser-Reaktoren?",a:["Mehr Dampf ließ die Leistung steigen statt sinken","Er hatte keine Brennstäbe","Er lief ohne Uran","Er hatte zu viele Sicherheitsbehälter"],e:"Diese Eigenschaft der Bauart und abgeschaltete Schutzsysteme führten zum Unfall."},
+ {l:21,f:"Welche der drei Strahlenarten wird erst von dickem Blei stark geschwächt?",bild:["strahlung",3],a:["Gamma","Alpha","Beta","Keine"],e:"Alpha stoppt am Papier, Beta am Aluminium, Gamma braucht Blei oder viel Beton."},
+ {l:21,f:"Was hält Alpha-Strahlung auf?",a:["Schon ein Blatt Papier","Nur dickes Blei","Nur meterdicker Beton","Gar nichts"],e:"Alpha kommt nicht weit. Gefährlich wird sie, wenn man den Stoff einatmet oder verschluckt."},
+ {l:22,f:"Von 100 Kernen ist die Hälfte zerfallen. Wie heißt die Zeit, die dafür vergeht?",bild:["halbwert",1],a:["Halbwertszeit","Abklingzeit","Laufzeit","Kritische Zeit"],e:"Nach jeder Halbwertszeit ist nur noch die Hälfte übrig."},
+ {l:22,f:"Rechenaufgabe: Cäsium-137 hat 30 Jahre Halbwertszeit. Wie viel ist nach 90 Jahren übrig?",a:["Ein Achtel, also 12,5 Prozent","Nichts mehr","Ein Drittel","Die Hälfte"],e:"90 Jahre sind 3 Halbwertszeiten: Hälfte, Viertel, Achtel."},
+ {l:23,f:"Wie lange bleiben Brennelemente mindestens im Abklingbecken?",a:["5 Jahre","5 Tage","5 Monate","500 Jahre"],e:"Erst nach mindestens 5 Jahren sind sie kühl genug für den Castor."},
+ {l:23,f:"Was ist hier zu sehen?",bild:["castor",2],a:["Ein Castor-Behälter","Ein Brennstab","Ein Dampferzeuger","Ein Kühlturm"],e:"Dicke Wand, Kühlrippen außen, Brennelemente innen: ein Castor."},
+ {l:24,f:"Für wie lange soll ein Endlager den Abfall sicher einschließen?",a:["1 Million Jahre","100 Jahre","1.000 Jahre","10.000 Jahre"],e:"Deshalb liegt es tief im Gestein und hat mehrere Barrieren."},
+ {l:25,f:"Wann gingen die letzten deutschen Kernkraftwerke vom Netz?",a:["Am 15. April 2023","Im Jahr 2011","Im Jahr 2000","Im Jahr 1986"],e:"Isar 2, Emsland und Neckarwestheim 2 waren die letzten drei."}
+];
+let Q=null;
+function mische(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function neuesQuiz(){Q={fragen:mische(FRAGEN).slice(0,10).map(f=>({...f,opt:mische(f.a.map((t,i)=>({t,ok:i===0})))})),i:0,punkte:0,falsch:[],wahl:null}}
+function zeigeQuiz(){
+  P=null; if(!Q)neuesQuiz();
+  const best=lies("kk-quiz-best",0);
+  if(Q.i>=Q.fragen.length){
+    if(Q.punkte>best)schreib("kk-quiz-best",Q.punkte);
+    const wl=[...new Set(Q.falsch)].sort((a,b)=>a-b).map(nr=>LEKTIONEN.find(l=>l.nr===nr));
+    inhalt.innerHTML=`<a class="zurueck" href="#start">← Startseite</a>
+    <div class="titelblock"><span class="klein">Quiz · Ergebnis</span><h1>${Q.punkte} von 10 richtig</h1>
+    <p>${Q.punkte===10?"Alles richtig. Stark!":Q.punkte>=7?"Gut gemacht.":"Das wird noch. Schau dir die Lektionen unten noch einmal an."} Dein Bestwert: ${Math.max(best,Q.punkte)} von 10.</p></div>
+    ${wl.length?`<h2 class="zw">Zum Wiederholen</h2><div class="karten" style="--akz:var(--gold)">${wl.map(l=>`<a class="karte" href="#lektion-${zwei(l.nr)}"><span class="klein">Lektion ${l.nr}</span><b>${l.titel}</b></a>`).join("")}</div>`:""}
+    <button class="gross" id="nochmal" type="button">Noch einmal spielen</button>`;
+    document.getElementById("nochmal").onclick=()=>{Q=null;zeigeQuiz();window.scrollTo(0,0)}; return;
+  }
+  const f=Q.fragen[Q.i], l=LEKTIONEN.find(z=>z.nr===f.l), fertigF=Q.wahl!==null, ok=fertigF&&f.opt[Q.wahl].ok;
+  inhalt.innerHTML=`<a class="zurueck" href="#start">← Startseite</a>
+  <div class="titelblock"><span class="klein">Quiz · Frage ${Q.i+1} / 10 · ${Q.punkte} richtig</span><h1 style="font-size:21px">${f.f}</h1></div>
+  ${f.bild?`<div class="buehne" style="border-radius:16px"><canvas id="qb" role="img" aria-label="Bild zur Frage, ohne Beschriftung"></canvas></div>`:""}
+  <div class="opts">${f.opt.map((o,i)=>`<button type="button" class="opt${fertigF?(o.ok?" richtig":i===Q.wahl?" falsch":""):""}" data-i="${i}"${fertigF?" disabled":""}>${o.t}</button>`).join("")}</div>
+  ${fertigF?`<div class="box" style="--f:var(--${ok?"gruen":"rot"});margin-top:12px"><span class="klein">${ok?"Richtig":"Leider falsch"}</span><p>${f.e}</p><a class="zurLektion" href="#lektion-${zwei(l.nr)}">Zur Lektion ${l.nr}: ${l.titel} →</a></div>
+  <button class="gross" id="qweiter" type="button">${Q.i===Q.fragen.length-1?"Ergebnis ansehen":"Nächste Frage"}</button>`:""}`;
+  if(f.bild){const cv=document.getElementById("qb"), d=window.devicePixelRatio||1, w=cv.clientWidth||328, x=cv.getContext("2d");
+    cv.width=Math.round(w*d); cv.height=Math.round(w*280/360*d); x.setTransform(cv.width/360,0,0,cv.width/360,0,0);
+    OHNE_TEXT=true; try{ZEICHNER[f.bild[0]](x,f.bild[1],.999,3,C[bereich(l.b).farbe])}finally{OHNE_TEXT=false}}
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{Q.wahl=+b.dataset.i; if(f.opt[Q.wahl].ok)Q.punkte++; else Q.falsch.push(f.l); zeigeQuiz()});
+  const w=document.getElementById("qweiter"); if(w)w.onclick=()=>{Q.i++;Q.wahl=null;zeigeQuiz();window.scrollTo(0,0)};
+}
+
+/* ---------- Abspieler ---------- */
+let P=null;
+function starte(l,b,total){
+  const cv=document.getElementById("cv"), S=l.schritte;
+  const grenzen=[0]; S.forEach(s=>grenzen.push(grenzen[grenzen.length-1]+s.dauer));
+  P={l,b,cv,ctx:cv.getContext("2d"),S,grenzen,total,t:S[0].dauer-.01,lauf:false,tempo:1,frisch:true,alt:-1,letzte:0};
+  const pl=document.getElementById("pl"), sp=document.getElementById("sp");
+  pl.onclick=()=>{ if(P.lauf){P.lauf=false}else{ if(P.frisch||P.t>=P.total)P.t=0; P.frisch=false; P.lauf=true; P.letzte=performance.now(); requestAnimationFrame(takt)} knopf(); zeichne() };
+  document.getElementById("neu").onclick=()=>{P.t=0;P.frisch=false;P.lauf=true;P.letzte=performance.now();requestAnimationFrame(takt);knopf()};
+  sp.oninput=()=>{P.t=+sp.value;P.frisch=false;zeichne()};
+  document.querySelectorAll("#chips [data-s]").forEach(c=>c.onclick=()=>{P.t=P.grenzen[+c.dataset.s];P.frisch=false;if(!P.lauf){P.lauf=true;P.letzte=performance.now();requestAnimationFrame(takt)}knopf();zeichne()});
+  document.querySelectorAll("#chips [data-tempo]").forEach(c=>c.onclick=()=>{P.tempo=+c.dataset.tempo;tempoKnopf()});
+  const anpassen=()=>{const d=window.devicePixelRatio||1,w=cv.clientWidth;if(!w)return;cv.width=Math.round(w*d);cv.height=Math.round(w*280/360*d);zeichne()};
+  if(window.ResizeObserver)new ResizeObserver(anpassen).observe(cv); else window.addEventListener("resize",anpassen);
+  anpassen(); tempoKnopf(); knopf();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(P&&P.cv===cv)zeichne()});
+}
+function knopf(){const pl=document.getElementById("pl");if(!pl||!P)return;pl.innerHTML=P.lauf?SYM.pause:SYM.play;pl.setAttribute("aria-label",P.lauf?"Pause":"Abspielen")}
+function tempoKnopf(){document.querySelectorAll("#chips [data-tempo]").forEach(c=>c.setAttribute("aria-pressed",+c.dataset.tempo===P.tempo))}
+function takt(jetzt){
+  if(!P||!P.lauf)return;
+  P.t+=Math.min(.25,(jetzt-P.letzte)/1000)*P.tempo; P.letzte=jetzt;
+  if(P.t>=P.total){P.t=P.total;P.lauf=false;knopf();
+    if(!gesehen.includes(P.l.nr)){gesehen.push(P.l.nr);schreib("kk-gesehen",gesehen);baueSeite()}}
+  zeichne(); if(P.lauf)requestAnimationFrame(takt);
+}
+function lage(){
+  let i=P.S.length-1; for(let k=0;k<P.S.length;k++){if(P.t<P.grenzen[k+1]){i=k;break}}
+  return{i,p:Math.min(1,Math.max(0,(P.t-P.grenzen[i])/P.S[i].dauer))};
+}
+function zeichne(){
+  if(!P||!P.cv.width)return;
+  const {i,p}=lage(), x=P.ctx, k=P.cv.width/360;
+  x.setTransform(k,0,0,k,0,0); x.clearRect(0,0,360,280);
+  ZEICHNER[P.l.zeichne](x,i,p,P.t,C[P.b.farbe]);
+  const sp=document.getElementById("sp"); if(sp&&document.activeElement!==sp)sp.value=P.t; else if(sp&&Math.abs(+sp.value-P.t)>.02)sp.value=P.t;
+  if(i!==P.alt){P.alt=i;
+    document.getElementById("sn").textContent=`Schritt ${i+1} / ${P.S.length}`;
+    document.getElementById("st").textContent=P.S[i].titel;
+    document.getElementById("sx").textContent=P.S[i].text;
+    document.querySelectorAll("#chips [data-s]").forEach(c=>c.setAttribute("aria-pressed",+c.dataset.s===i));}
+}
+
+/* ---------- Zeichen-Werkzeug (für alle Lektionen) ---------- */
+const weich=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+const klemm=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+const misch=(a,b,t)=>a+(b-a)*t;
+let OHNE_TEXT=false; /* Quiz-Bilder: ohne Beschriftung, sonst stünde die Antwort im Bild */
+function pille(x,cx,cy,text,farbe,alpha=1){
+  if(alpha<=0||OHNE_TEXT)return; x.save(); x.globalAlpha=alpha;
+  x.font='700 11px "JetBrains Mono",monospace'; const w=x.measureText(text).width+16,h=20;
+  const l=klemm(cx-w/2,5,355-w);
+  x.beginPath(); x.roundRect(l,cy-h/2,w,h,10); x.fillStyle=C.bg; x.fill(); x.lineWidth=1.2; x.strokeStyle=farbe; x.stroke();
+  x.fillStyle=farbe; x.textAlign="center"; x.textBaseline="middle"; x.fillText(text,l+w/2,cy+.5); x.restore();
+}
+function kugel(x,cx,cy,r,farbe,alpha=1){
+  x.save(); x.globalAlpha=alpha; x.beginPath(); x.arc(cx,cy,r,0,6.2832); x.fillStyle=farbe; x.fill();
+  x.lineWidth=.8; x.strokeStyle=C.bg; x.stroke(); x.restore();
+}
+function pfeil(x,x1,y1,x2,y2,farbe,alpha=1){
+  if(alpha<=0)return; const w=Math.atan2(y2-y1,x2-x1);
+  x.save(); x.globalAlpha=alpha; x.strokeStyle=farbe; x.fillStyle=farbe; x.lineWidth=1.6; x.lineCap="round";
+  x.beginPath(); x.moveTo(x1,y1); x.lineTo(x2,y2); x.stroke();
+  x.beginPath(); x.moveTo(x2,y2); x.lineTo(x2-7*Math.cos(w-.45),y2-7*Math.sin(w-.45)); x.lineTo(x2-7*Math.cos(w+.45),y2-7*Math.sin(w+.45)); x.closePath(); x.fill(); x.restore();
+}
+function schrift(x,text,cx,cy,farbe,gr=11,alpha=1,fett=500){
+  if(alpha<=0||OHNE_TEXT)return; x.save(); x.globalAlpha=alpha; x.font=fett+" "+gr+'px "JetBrains Mono",monospace';
+  x.fillStyle=farbe; x.textAlign="center"; x.textBaseline="middle"; x.fillText(text,cx,cy); x.restore();
+}
+function block(x,l,o,w,h,farbe,alpha=1,r=4){
+  if(alpha<=0||w<=0)return; x.save(); x.globalAlpha=alpha; x.fillStyle=farbe; x.beginPath(); x.roundRect(l,o,w,h,Math.min(r,w/2)); x.fill(); x.restore();
+}
+function haufen(x,cx,cy,R,n,r,alpha=1){ if(alpha<=0)return; blume(n).forEach((q,i)=>kugel(x,cx+q[0]*R,cy+q[1]*R,r,(i*7)%5<2?C.rot:C.blau,alpha)) }
+function ring(x,cx,cy,r,farbe,alpha=1,dicke=2){
+  if(alpha<=0)return; x.save(); x.globalAlpha=alpha; x.strokeStyle=farbe; x.lineWidth=dicke; x.beginPath(); x.arc(cx,cy,r,0,6.2832); x.stroke(); x.restore();
+}
+function linie(x,pkt,farbe,alpha=1,dicke=2,strich){
+  if(alpha<=0||pkt.length<2)return; x.save(); x.globalAlpha=alpha; x.strokeStyle=farbe; x.lineWidth=dicke; x.lineJoin="round"; x.lineCap="round";
+  if(strich)x.setLineDash(strich); x.beginPath(); pkt.forEach((q,i)=>i?x.lineTo(q[0],q[1]):x.moveTo(q[0],q[1])); x.stroke(); x.restore();
+}
+function rahmen(x,l,o,w,h,farbe,alpha=1,r=6,dicke=1.2,strich){
+  if(alpha<=0)return; x.save(); x.globalAlpha=alpha; x.strokeStyle=farbe; x.lineWidth=dicke; if(strich)x.setLineDash(strich);
+  x.beginPath(); x.roundRect(l,o,w,h,r); x.stroke(); x.restore();
+}
+function tablette(x,cx,cy,w,h,a){
+  if(a<=0)return; const l=cx-w/2,o=cy-h/2,ry=w/7;
+  x.save(); x.globalAlpha=a; x.fillStyle=C.grau; x.strokeStyle=C.text; x.lineWidth=1.4;
+  x.beginPath(); x.moveTo(l,o); x.lineTo(l,o+h); x.ellipse(cx,o+h,w/2,ry,0,Math.PI,0,true); x.lineTo(l+w,o); x.closePath(); x.fill(); x.stroke();
+  x.fillStyle=C.flaeche2; x.beginPath(); x.ellipse(cx,o,w/2,ry,0,0,6.2832); x.fill(); x.stroke(); x.restore();
+}
+function wasser(x,cx,cy,w,a){
+  if(a<=0)return; kugel(x,cx+5.5*Math.cos(w+.9),cy+5.5*Math.sin(w+.9),2.6,C.rot,a); kugel(x,cx+5.5*Math.cos(w-.9),cy+5.5*Math.sin(w-.9),2.6,C.rot,a); kugel(x,cx,cy,4.5,C.grau,a);
+}
+function wegLaenge(pkt){let s=0;for(let i=1;i<pkt.length;i++)s+=Math.hypot(pkt[i][0]-pkt[i-1][0],pkt[i][1]-pkt[i-1][1]);return s}
+function wegPunkt(pkt,d){
+  for(let i=1;i<pkt.length;i++){const l=Math.hypot(pkt[i][0]-pkt[i-1][0],pkt[i][1]-pkt[i-1][1]);
+    if(d<=l){const f=l?d/l:0;return[misch(pkt[i-1][0],pkt[i][0],f),misch(pkt[i-1][1],pkt[i][1],f)]} d-=l}
+  return pkt[pkt.length-1];
+}
+/* Rohrleitung mit wandernden Punkten */
+function fluss(x,pkt,farbe,t,a=1,tempo=40,abstand=26,r=2.4){
+  if(a<=0)return; linie(x,pkt,farbe,a*.55,2); const L=wegLaenge(pkt);
+  for(let d=(t*tempo)%abstand;d<L;d+=abstand){const q=wegPunkt(pkt,d);kugel(x,q[0],q[1],r,farbe,a)}
+}
+function kasten(x,l,o,w,h,a,text,r=4){
+  block(x,l,o,w,h,C.flaeche2,a,r); rahmen(x,l,o,w,h,C.text,a,r,1.4); if(text)schrift(x,text,l+w/2,o+h/2+.5,C.text,9,a);
+}
+function turm(x,cx,o,u,a,b=24,w=10,tp=17){
+  if(a<=0)return; const m=o+(u-o)*.38; x.save(); x.globalAlpha=a; x.fillStyle=C.flaeche2; x.strokeStyle=C.text; x.lineWidth=1.4;
+  x.beginPath(); x.moveTo(cx-b,u); x.quadraticCurveTo(cx-w,m,cx-tp,o); x.lineTo(cx+tp,o); x.quadraticCurveTo(cx+w,m,cx+b,u); x.closePath(); x.fill(); x.stroke(); x.restore();
+}
+function wolke(x,cx,cy,a,gr=1){
+  if(a<=0)return; x.save(); x.globalAlpha=a*.8; x.fillStyle=C.grau;
+  [[0,0,9],[-10,4,7],[10,4,7],[-4,-6,7],[6,-5,6]].forEach(q=>{x.beginPath();x.arc(cx+q[0]*gr,cy+q[1]*gr,q[2]*gr,0,6.2832);x.fill()}); x.restore();
+}
+function pumpe(x,cx,cy,a){ if(a<=0)return; kugel(x,cx,cy,6,C.flaeche2,a); ring(x,cx,cy,6,C.text,a,1.4) }
+/* Turbine, Generator, Kondensator, Kühlturm: gleich für Druck- und Siedewasserreaktor */
+function maschinen(x,t,a,sek,kuehl,quelle,ziel){
+  fluss(x,[...quelle,[225,52],[225,68]],C.text,t,sek,55);
+  fluss(x,[[242,96],[242,150]],C.text,t,sek,30);
+  fluss(x,[[207,165],...ziel],C.blau,t,sek,30);
+  fluss(x,[[258,180],[258,228],[302,228]],C.violett,t,kuehl,30); fluss(x,[[306,208],[230,208],[230,180]],C.violett,t,kuehl,30);
+  x.save(); x.globalAlpha=a; x.fillStyle=C.flaeche2; x.strokeStyle=C.text; x.lineWidth=1.4;
+  x.beginPath(); x.moveTo(205,72); x.lineTo(255,62); x.lineTo(255,98); x.lineTo(205,88); x.closePath(); x.fill(); x.stroke(); x.restore();
+  linie(x,[[255,80],[272,80]],C.text,a,3); kasten(x,272,68,40,24,a); kasten(x,207,150,70,30,a,"Kondensator"); turm(x,322,150,245,a);
+  pumpe(x,180,165,sek);
+  schrift(x,"Turbine",213,112,C.grau,9,a); schrift(x,"Generator",292,102,C.grau,9,a); schrift(x,"Kühlturm",322,256,C.grau,9,a);
+  if(sek>0){pfeil(x,314,80,346,80,C.gold,sek); schrift(x,"Strom",330,68,C.gold,9,sek,700)}
+  wolke(x,322,136,kuehl);
+}
+function haus(x,l,o,farbe,a){
+  if(a<=0)return; block(x,l,o+6,12,9,farbe,a,1); x.save(); x.globalAlpha=a; x.fillStyle=farbe; x.beginPath(); x.moveTo(l-2,o+6); x.lineTo(l+6,o); x.lineTo(l+14,o+6); x.closePath(); x.fill(); x.restore();
+}
+function legende(x,a){
+  kugel(x,112,264,5,C.rot,a); kugel(x,196,264,5,C.blau,a);
+  x.save(); x.globalAlpha=a; x.font='500 11px "JetBrains Mono",monospace'; x.fillStyle=C.grau; x.textBaseline="middle"; x.fillText("Proton",122,264.5); x.fillText("Neutron",206,264.5); x.restore();
+}
+function blume(n){const a=[];for(let i=0;i<n;i++){const r=Math.sqrt((i+.5)/n),w=i*2.39996;a.push([r*Math.cos(w),r*Math.sin(w)])}return a}
+
+/* ---------- Zeichnung: Kernspaltung ---------- */
+const KERN=(()=>{
+  const N=64,nA=38, basis=blume(N).map((q,i)=>({bx:q[0],by:q[1],proton:(i*7)%5<2,i}));
+  basis.push({bx:-.98,by:.02,proton:false,i:N,gast:true});
+  const sortiert=[...basis].sort((a,b)=>a.bx-b.bx), A=sortiert.slice(0,nA+1), B=sortiert.slice(nA+1);
+  const zielA=blume(A.length).sort((a,b)=>a[0]-b[0]), zielB=blume(B.length).sort((a,b)=>a[0]-b[0]);
+  A.forEach((t,k)=>{t.gruppe=0;t.zx=zielA[k][0];t.zy=zielA[k][1]});
+  B.forEach((t,k)=>{t.gruppe=1;t.zx=zielB[k][0];t.zy=zielB[k][1]});
+  return basis;
+})();
+/* feste Zufallsreihenfolge für 1.000 Punkte (immer gleich, damit Bild und Short übereinstimmen) */
+const RANG=(()=>{const a=[...Array(1000).keys()];let z=20261125;for(let i=999;i>0;i--){z=(z*1103515245+12345)%2147483648;const j=z%(i+1);[a[i],a[j]]=[a[j],a[i]]}return a})();
+const MOL=[[96,108,0],[156,68,2],[206,158,4],[134,203,1],[236,213,3],[60,170,1],[120,150,2.5],[250,62,.5],[185,112,3.4],[75,222,4.2],[238,118,5],[40,105,2],[300,228,1]];
+function achsen(x,a,yName="Leistung",xName="Zeit"){
+  pfeil(x,50,230,50,44,C.grau,a); pfeil(x,50,230,338,230,C.grau,a); schrift(x,yName,50,32,C.grau,10,a); schrift(x,xName,322,244,C.grau,10,a);
+}
+function kreuz(x,cx,cy,r,farbe,a){ linie(x,[[cx-r,cy-r],[cx+r,cy+r]],farbe,a,2.5); linie(x,[[cx+r,cy-r],[cx-r,cy+r]],farbe,a,2.5) }
+const R100=(()=>{const o=[...Array(100).keys()].sort((a,b)=>RANG[a*9]-RANG[b*9]),r=[];o.forEach((i,k)=>r[i]=k);return r})();
+function castorBild(x,l,o,w,h,a){ block(x,l,o,w,h,C.grau,a,3); block(x,l-2,o-3,w+4,5,C.text,a,2) }
+const ZEICHNER={
+ strahlung(x,s,p,t,akz){
+  const a=klemm(p*3);
+  if(s===0){
+    haufen(x,180,140,22,26,3.6,a); [[-2.4,"Alpha",C.rot],[-.4,"Beta",C.blau],[1.3,"Gamma",C.gold]].forEach((q,i)=>{const f=(t*.5+i/3)%1, r=34+f*60;
+      kugel(x,180+r*Math.cos(q[0]),140+r*Math.sin(q[0]),3,q[2],a*(1-f)); pille(x,180+118*Math.cos(q[0]),140+92*Math.sin(q[0]),q[1],q[2],klemm(p*3-.6-i*.4));});
+    pille(x,180,262,"Radioaktivität: Kerne wandeln sich um",C.text,klemm(p*3-1.6));
+  }else if(s<=3){
+    [[130,3,"Papier",C.text],[210,8,"Aluminium",C.grau],[290,22,"Blei",C.grau]].forEach(q=>{block(x,q[0]-q[1]/2,54,q[1],170,q[3],1,1); schrift(x,q[2],q[0],42,C.grau,9,1)});
+    const Z=[[80,"Alpha",C.rot,127],[140,"Beta",C.blau,205],[200,"Gamma",C.gold,279]];
+    Z.forEach((z,k)=>{ if(s<k+1)return; const neu=s===k+1, b=neu?a:1, f=neu?klemm(p*1.4):1, ende=misch(64,z[3],f), lauf=64+((t*70)%(z[3]-64));
+      pille(x,34,z[0],z[1],z[2],b);
+      if(k===2){const q=[];for(let i=64;i<=ende;i+=2)q.push([i,z[0]+5*Math.sin(i*.35-t*8)]);linie(x,q,z[2],b,2);
+        if(f>=1){const r=[];for(let i=301;i<=345;i+=2)r.push([i,z[0]+2.5*Math.sin(i*.35-t*8)]);linie(x,r,z[2],.4,1.5);}}
+      else{linie(x,[[64,z[0]],[ende,z[0]]],z[2],b*.5,2,[3,4]); const px=f<1?ende:lauf;
+        if(k===0)[[0,-3],[0,3],[-3,0],[3,0]].forEach((o,i)=>kugel(x,px+o[0],z[0]+o[1],2.6,i<2?C.rot:C.blau,b)); else kugel(x,px,z[0],2.4,z[2],b);}
+    });
+    pille(x,180,262,["Alpha: Papier genügt","Beta: einige Millimeter Aluminium","Gamma: dickes Blei oder Beton"][s-1],Z[s-1][2],klemm(p*3-1.6));
+  }else{
+    [["ABSTAND","weiter weg"],["ABSCHIRMUNG","etwas dazwischen"],["ZEIT","kurz bleiben"]].forEach((q,i)=>{const b=klemm(p*4-i*.7), l=14+i*113;
+      kasten(x,l,70,106,80,b,null,8); schrift(x,q[0],l+53,98,akz,11,b,700); schrift(x,q[1],l+53,124,C.text,9,b);});
+    pille(x,180,28,"die drei Schutzregeln",C.text,a); pille(x,180,196,"gemessen wird in Sievert",C.grau,klemm(p*4-2.6)); pille(x,180,226,"Natur: etwa 2 Millisievert pro Jahr",C.gruen,klemm(p*4-3));
+  }
+ },
+ halbwert(x,s,p,t,akz){
+  const a=klemm(p*3);
+  if(s<=2){
+    const weg=s===0?Math.round(8*klemm(p*1.2)):s===1?Math.round(misch(8,50,weich(klemm(p*1.2)))):Math.round(p<.55?misch(50,75,weich(klemm(p*2.4))):misch(75,87,weich(klemm((p-.55)*2.4))));
+    for(let i=0;i<100;i++){const z=R100[i]<weg; kugel(x,112+(i%10)*15,58+((i/10)|0)*15,5,z?C.grau:akz,(s===0?a:1)*(z?.3:1));}
+    const kopf=s===0?"100 instabile Kerne":s===1?(weg<50?"1. Halbwertszeit läuft":"nach 1 Halbwertszeit"):weg<75?"2. Halbwertszeit läuft":p<.55?"nach 2 Halbwertszeiten":weg<87?"3. Halbwertszeit läuft":"nach 3 Halbwertszeiten";
+    pille(x,180,24,kopf,C.text,s===0?a:1);
+    pille(x,180,236,s===0?"wann einer zerfällt, weiß niemand":"noch "+(100-weg)+" von 100 übrig",akz,s===0?klemm(p*3-1.4):1);
+  }else if(s===3){
+    const u1=klemm(p*1.3), q=[]; achsen(x,a,"übrig","");
+    for(let u=0;u<=u1+1e-6;u+=.01)q.push([50+280*u,230-180*Math.pow(.5,u*4)]); linie(x,q,akz,1,2.5);
+    schrift(x,"100 %",78,50,C.text,10,a,700);
+    [["50 %",1],["25 %",2],["12,5 %",3],["6 %",4]].forEach(w=>{const k=w[1], px=50+70*k, py=230-180/Math.pow(2,k), b=u1>=k/4?1:0;
+      kugel(x,px,py,3.5,C.text,b); schrift(x,w[0],px+(k===4?-10:22),py-12,C.text,10,b,700); schrift(x,String(k),px,242,C.grau,10,a);});
+    schrift(x,"Halbwertszeiten",190,258,C.grau,10,a); pille(x,215,24,"immer dieselbe Kurve",C.text,a);
+  }else{
+    const W=[["Jod-131","8 Tage"],["Cäsium-137","30 Jahre"],["Plutonium-239","24.000 Jahre"],["Uran-235","700 Millionen Jahre"]];
+    kasten(x,30,56,300,160,a,null,10);
+    W.forEach((w,i)=>{const b=klemm(p*5-.8-i*.8), y=82+i*36; x.save(); x.globalAlpha=b; x.font='700 11px "JetBrains Mono",monospace'; x.textBaseline="middle"; x.fillStyle=akz; x.textAlign="left"; x.fillText(w[0],46,y); x.fillStyle=C.text; x.textAlign="right"; x.fillText(w[1],314,y); x.restore();
+      if(i<3)linie(x,[[46,y+18],[314,y+18]],C.linie,b,1);});
+    pille(x,180,28,"Halbwertszeiten sind sehr verschieden",C.text,a); pille(x,180,246,"kurzlebig: stark, aber bald weg",akz,klemm(p*5-4));
+  }
+ },
+ castor(x,s,p,t,akz){
+  const a=klemm(p*3);
+  if(s===0){
+    block(x,40,48,290,56,C.blau,.2*a,4); kasten(x,60,100,60,120,a,null,10); block(x,62,102,56,116,C.blau,.2*a,8);
+    kasten(x,190,100,130,120,a,null,6); block(x,192,102,126,116,C.blau,.2*a,4);
+    for(let i=0;i<3;i++)block(x,72+i*14,160,8,50,C.gold,a,1); for(let i=0;i<4;i++)block(x,205+i*18,160,8,50,C.gold,a,1);
+    const W=[[104,185],[104,75],[291,75],[291,185]], L=wegLaenge(W), q=wegPunkt(W,L*weich(klemm((p-.2)/.65)));
+    linie(x,[[q[0],30],[q[0],q[1]-25]],C.text,a,1.2); block(x,q[0]-12,26,24,5,C.text,a,1); block(x,q[0]-4,q[1]-25,8,50,akz,a,1);
+    schrift(x,"Reaktor",90,234,C.grau,9,a); schrift(x,"Abklingbecken",255,234,C.grau,9,a); pille(x,180,262,"der ganze Weg liegt unter Wasser",C.blau,klemm(p*3-1.4));
+  }else if(s===1){
+    kasten(x,60,60,240,170,a,null,6); block(x,62,80,236,148,C.blau,.25*a,4);
+    for(let i=0;i<8;i++)block(x,85+i*24,166,10,56,C.gold,a,1);
+    pfeil(x,288,122,288,84,C.text,a); pfeil(x,288,122,288,162,C.text,a); schrift(x,"mehrere Meter Wasser",190,122,C.text,10,a);
+    pille(x,180,26,"ABKLINGBECKEN · mindestens 5 Jahre",akz,a); pille(x,180,256,"Wasser kühlt und schirmt ab",C.blau,klemm(p*3-1.2));
+  }else if(s===2){
+    block(x,140,52,80,168,C.grau,a,8); for(let y=64;y<212;y+=9)linie(x,[[140,y],[220,y]],C.bg,a*.6,1.5);
+    block(x,160,74,40,128,C.flaeche2,a,4); for(let i=0;i<3;i++)block(x,166+i*11,84,6,108,C.gold,a,1); block(x,136,44,88,12,C.text,a,3);
+    pfeil(x,244,136,244,50,C.text,a); pfeil(x,244,136,244,220,C.text,a); pille(x,280,136,"6 m",C.text,a);
+    const b=klemm(p*3-.8); pille(x,62,100,"40 cm Wand",C.text,b); pfeil(x,106,100,138,100,C.grau,b); pille(x,62,160,"Kühlrippen",C.text,b); pfeil(x,106,160,138,160,C.grau,b);
+    pille(x,180,20,"CASTOR",akz,a); pille(x,180,258,"beladen über 100 Tonnen",C.text,klemm(p*3-1.6));
+  }else if(s===3){
+    rahmen(x,40,82,280,130,C.text,a,2,4); linie(x,[[36,82],[180,56],[324,82]],C.text,a,3);
+    for(let i=0;i<6;i++)castorBild(x,64+i*42,150,22,56,klemm(p*5-i*.4));
+    const f=(t*.6)%1; pfeil(x,8,196,36,196,C.blau,a); [[110,0],[250,.5]].forEach(q=>{const g=(f+q[1])%1; pfeil(x,q[0],140-g*30,q[0],118-g*30,C.rot,a*(1-g))});
+    schrift(x,"kühle Luft",44,226,C.blau,9,a); schrift(x,"warme Luft steigt auf",180,100,C.rot,9,a);
+    pille(x,180,22,"ZWISCHENLAGER · Luft kühlt von selbst",akz,a); pille(x,180,246,"am Ende weit über 1.000 Behälter",C.text,klemm(p*3-1.6));
+  }else{
+    block(x,30,120,20,40,C.blau,a,2); block(x,54,120,60,40,akz,klemm(p*3-.6),2); block(x,118,120,212,40,C.grau,klemm(p*3-1.2),2);
+    schrift(x,"Becken",44,96,C.blau,9,a); schrift(x,"5 Jahre",44,108,C.blau,9,a);
+    schrift(x,"Zwischenlager",84,174,akz,9,klemm(p*3-.6)); schrift(x,"Jahrzehnte",84,188,akz,9,klemm(p*3-.6));
+    schrift(x,"Endlager",224,134,C.bg,11,klemm(p*3-1.2),700); schrift(x,"bis zu 1 Million Jahre",224,150,C.bg,9,klemm(p*3-1.2));
+    schrift(x,"(nicht maßstäblich)",180,216,C.grau,9,a); pille(x,180,28,"das Zwischenlager ist nur ein Zwischenschritt",C.text,a);
+  }
+ },
+ endlager(x,s,p,t,akz){
+  const a=klemm(p*3);
+  if(s===0){
+    const n=Math.round(12*klemm((p-.1)/.6)); for(let i=0;i<n;i++)castorBild(x,101+(i%6)*30,74+((i/6)|0)*62,14,40,1);
+    pille(x,180,28,"hochradioaktiver Abfall in Deutschland",C.text,a); pille(x,180,214,"rund 27.000 Kubikmeter",akz,n===12?1:0); schrift(x,"verpackt in weit über 1.000 Behälter",180,242,C.grau,10,n===12?1:0);
+  }else if(s===1){
+    block(x,0,60,360,50,C.grau,.12*a,0); block(x,0,110,360,55,C.grau,.22*a,0); block(x,0,165,360,80,akz,.2*a,0);
+    linie(x,[[0,60],[360,60]],C.text,a,1.5); kasten(x,165,42,30,18,a,null,2);
+    const f=weich(klemm((p-.2)/.5)); block(x,177,60,6,140*f,C.text,1,1);
+    block(x,90,198,180,5,C.text,klemm(p*3-1.8),1); for(let i=0;i<7;i++)block(x,100+i*26,203,8,14,C.gold,klemm(p*4-2.6-i*.1),1);
+    pfeil(x,24,130,24,64,C.grau,a); pfeil(x,24,130,24,198,C.grau,a); pille(x,88,130,"mehrere 100 m",C.text,a);
+    schrift(x,"Wirtsgestein",306,180,akz,9,a,700); schrift(x,"Oberfläche",300,50,C.grau,9,a); pille(x,180,264,"kein Wetter, kaum Veränderung",C.text,klemm(p*3-2));
+  }else if(s===2){
+    [["STEINSALZ","schließt Lücken","leitet Wärme gut"],["TONGESTEIN","sehr dicht","quillt bei Wasser"],["GRANIT","hart und fest","aber oft klüftig"]].forEach((q,i)=>{const b=klemm(p*4-i*.7), l=14+i*113;
+      kasten(x,l,66,106,110,b,null,8); schrift(x,q[0],l+53,92,akz,11,b,700); schrift(x,q[1],l+53,122,C.text,9,b); schrift(x,q[2],l+53,146,C.text,9,b);});
+    pille(x,180,28,"drei mögliche Wirtsgesteine",C.text,a); pille(x,180,214,"jedes hat Stärken und Schwächen",C.grau,klemm(p*4-3));
+  }else if(s===3){
+    block(x,40,56,280,170,akz,.22*a,10); schrift(x,"3 Gestein",180,72,akz,10,a,700);
+    block(x,90,92,180,104,C.grau,.4*klemm(p*3-.6),8); schrift(x,"2 Füllung aus Ton oder Salz",180,106,C.text,9,klemm(p*3-.6));
+    block(x,146,122,68,50,C.gold,klemm(p*3-1.2),6); schrift(x,"1 Behälter",180,147,C.bg,10,klemm(p*3-1.2),700);
+    pille(x,180,28,"wieder mehrere Barrieren",C.text,a); pille(x,180,252,"Ziel: 1 Million Jahre dicht",akz,klemm(p*3-2));
+  }else{
+    linie(x,[[40,140],[230,140]],C.text,a,2); linie(x,[[230,140],[330,140]],C.text,a,2,[4,5]);
+    [[60,"2017","Suche beginnt",-1],[160,"heute","Gebiete eingrenzen",1],[270,"später","Standort steht fest",-1]].forEach((q,i)=>{const b=klemm(p*4-.6-i*.8);
+      kugel(x,q[0],140,5,akz,b); schrift(x,q[1],q[0],140+q[3]*22,akz,11,b,700); schrift(x,q[2],Math.max(62,Math.min(298,q[0])),140+q[3]*38,C.text,9,b);});
+    pille(x,180,28,"Deutschland: noch kein Standort",C.text,a); pille(x,180,236,"Finnland: erstes Endlager gebaut",C.gruen,klemm(p*4-3));
+  }
+ },
+ rueckbau(x,s,p,t,akz){
+  const a=klemm(p*3);
+  if(s<=1){
+    const J=[[1961,0],[1968,2],[1975,9],[1980,14],[1985,30],[1990,29],[1997,31],[2005,26],[2010,22],[2011,18],[2015,14],[2020,11],[2022,6],[2023.3,0]];
+    const X=j=>40+(j-1961)/62.3*280, bis=s===0?1961+62.3*klemm(p*1.3):2024, q=[[40,200]];
+    J.forEach((w,i)=>{ if(w[0]<=bis)q.push([X(w[0]),200-w[1]*3]); else if(i&&J[i-1][0]<bis){const f=(bis-J[i-1][0])/(w[0]-J[i-1][0]); q.push([X(bis),200-misch(J[i-1][1],w[1],f)*3]);} });
+    const e=q[q.length-1]; x.save(); x.globalAlpha=.3; x.fillStyle=akz; x.beginPath(); q.forEach((w,i)=>i?x.lineTo(w[0],w[1]):x.moveTo(w[0],w[1])); x.lineTo(e[0],200); x.closePath(); x.fill(); x.restore();
+    linie(x,q,akz,1,2.5); linie(x,[[40,200],[330,200]],C.grau,1,1.2);
+    [1961,1990,2011,2023].forEach(j=>schrift(x,String(j),X(j),214,C.grau,9,1)); schrift(x,"Anteil der Kernkraft am Strom",180,236,C.grau,9,1);
+    if(s===0){pille(x,150,36,"1961: erstes Kernkraftwerk in Kahl",C.text,a); pille(x,186,64,"1990er: knapp ein Drittel des Stroms",akz,bis>1995?1:0);}
+    else{linie(x,[[X(2011),90],[X(2011),200]],C.rot,a,1.2,[3,4]); pille(x,186,36,"2011: Ausstieg beschlossen",C.rot,a); pille(x,186,64,"15. April 2023: die letzten drei",akz,klemm(p*3-1.2));}
+  }else if(s<=3){
+    const f=s===3?klemm(p*1.2):0;
+    linie(x,[[20,210],[340,210]],C.text,1,1.5);
+    for(let i=0;i<30;i++){const c=i%5, r=(i/5)|0, weg=R100[i*3]/100<f; if(weg)continue; if(r===0&&(c===0||c===4))continue; block(x,80+c*16,114+r*16,15,15,C.grau,s===2?a:1,2);}
+    block(x,165,210-50*(1-f*.9),50,50*(1-f*.9),C.grau,(s===2?a:1)*.8,2); turm(x,294,misch(90,190,f),210,s===2?a:1,36,14,24);
+    if(s===2){const g=weich(klemm((p-.3)/.5)); for(let i=0;i<3;i++)block(x,misch(105,222,g)+i*9,misch(170,178,g),6,30,C.gold,1,1);
+      pille(x,180,28,"1. Brennelemente heraus",C.gold,a); pille(x,180,56,"2. von innen nach außen zerlegen",C.text,klemm(p*3-1.6));}
+    else{block(x,40,232,268,12,C.gruen,1,2); block(x,310,232,12,12,akz,1,2); schrift(x,"grün: normal verwertbar · violett: radioaktiver Abfall",180,258,C.grau,9,1);
+      pille(x,180,28,"Rückbau: meist 15 bis 20 Jahre",C.text,a); pille(x,180,56,"jedes Teil wird gemessen",akz,klemm(p*3-1.2));}
+  }else{
+    block(x,0,190,360,90,C.gruen,.22*a,0); linie(x,[[0,190],[360,190]],C.gruen,a,2);
+    [[70,0],[110,6],[150,-3]].forEach(q=>{block(x,q[0]-1.5,168+q[1],3,22-q[1],C.grau,a,1); kugel(x,q[0],160+q[1],11,C.gruen,a)});
+    kasten(x,240,150,84,40,klemm(p*3-1),null,3); for(let i=0;i<4;i++)castorBild(x,250+i*18,164,10,24,klemm(p*3-1));
+    schrift(x,"Zwischenlager bleibt",282,140,akz,9,klemm(p*3-1),700);
+    pille(x,150,40,"am Ende: grüne Wiese",C.gruen,a); pille(x,180,246,"weltweit laufen über 400 Reaktoren",C.text,klemm(p*3-2));
+  }
+ },
+ barrieren(x,s,p,t,akz){
+  const MX=115,MY=145, R=[[20,2,C.gold],[42,5,C.grau],[72,3,C.blau],[98,9,C.text]];
+  const N=["1 Tablette","2 Hüllrohr","3 Druckbehälter","4 Stahlkugel","5 Betonhülle"];
+  const U=["hält die meisten Spaltprodukte fest","gasdicht verschweißt","25 cm dicker Stahl","Stahlkugel mit 56 m Durchmesser","fast 2 m Stahlbeton"];
+  for(let k=3;k>=0;k--){const a=s>k+1?1:s===k+1?klemm(p*3):0; ring(x,MX,MY,R[k][0],R[k][2],a*(k===3?.75:1),R[k][1]);}
+  block(x,MX-9,MY-11,18,22,C.gold,s===0?klemm(p*3):1,3);
+  for(let i=0;i<6;i++)kugel(x,MX+Math.sin(t*3+i*2.1)*5,MY+Math.cos(t*2.3+i*1.3)*7,1.8,C.rot,s===0?klemm(p*3):1);
+  N.forEach((n,k)=>{const a=s>k?1:s===k?klemm(p*3-.5):0, y=50+k*46, r=k===0?10:R[k-1][0], w=Math.atan2(y-MY,228-MX);
+    linie(x,[[228,y],[MX+r*Math.cos(w),MY+r*Math.sin(w)]],C.grau,a*.7,1); pille(x,292,y,n,k===s?akz:C.grau,a);});
+  pille(x,180,268,U[s],C.text,klemm(p*3-1.2));
+ },
+ scram(x,s,p,t,akz){
+  if(s===0){
+    const a=klemm(p*3), N=["Druck","Temp.","Wasser","Neutronen"], W=[.6,.55,misch(.6,.22,weich(klemm((p-.3)/.45))),.5];
+    N.forEach((n,i)=>{const cx=70+i*73, rot=W[i]<.4;
+      rahmen(x,cx-13,70,26,120,C.grau,a,4); block(x,cx-13,70+120*.2,26,120*.4,C.gruen,a*.18,0);
+      block(x,cx-11,188-116*W[i],22,116*W[i],rot?C.rot:C.gruen,a,3); schrift(x,n,cx,204,rot?C.rot:C.grau,9,a);});
+    schrift(x,"hell = erlaubter Bereich",180,52,C.grau,9,a);
+    pille(x,180,22,"Reaktorschutz überwacht alle Werte",C.text,a); pille(x,180,248,"SCHNELLABSCHALTUNG",C.rot,W[2]<.4?1:0);
+  }else if(s===1||s===3){
+    const f=weich(klemm((p-.3)/.3)), e=misch(.2,1,f), tip=misch(112,232,e), los=p>.3, a=klemm(p*4), n=Math.round(22*(1-e));
+    block(x,60,110,180,130,C.flaeche2,1,6); rahmen(x,60,110,180,130,C.grau,1,6);
+    for(let i=0;i<6;i++)block(x,75+i*30,120,10,112,C.gold,1,3);
+    for(let i=0;i<n;i++){const hx=Math.abs(Math.sin(i*12.9898)*43758.5)%1, hy=Math.abs(Math.sin(i*78.233)*12345.6)%1; kugel(x,66+((hx*168+t*18*(i%3+1))%168),116+((hy*118+t*13*(i%4+1))%118),2.6,C.blau,1);}
+    [95,155,215].forEach(cx=>{block(x,cx-1,34,2,Math.max(0,tip-112-34),C.violett,1,0); block(x,cx-4,tip-112,8,112,C.violett,1,3); block(x,cx-8,24,16,10,los?C.grau:C.gold,1,2);});
+    pille(x,300,30,los?"Magnet: aus":"Magnet: hält",los?C.grau:C.gold,a);
+    if(s===1){pille(x,300,150,"ca. 2 s",C.text,los?1:0); pille(x,180,262,"Magnete lassen los → Stäbe fallen",akz,los?1:0);}
+    else{pille(x,300,150,"Strom weg",C.rot,a); pille(x,180,262,"Ausfall führt in den sicheren Zustand",C.gruen,los?1:0);}
+  }else{
+    const u1=s===2?klemm(p*1.3):1, q=[]; achsen(x,s===2?klemm(p*4):1);
+    for(let u=0;u<=u1+1e-6;u+=.01)q.push([50+280*u,u<.25?70:70+150*(1-Math.exp(-(u-.25)*30))]);
+    schrift(x,"100 %",28,70,C.grau,9,1); linie(x,[[120,62],[120,230]],C.grau,.6,1,[3,4]); schrift(x,"Abschaltung",120,54,C.rot,9,1,700);
+    if(s===4){block(x,122,220,208,10,C.gold,.55*klemm(p*3),0); pille(x,236,196,"Nachwärme: anfangs rund 6 %",C.gold,klemm(p*3-.6));}
+    linie(x,q,akz,1,2.5);
+    if(s===2)pille(x,236,150,"Spaltung: fast null",C.text,u1>=1?1:0);
+  }
+ },
+ nachwaerme(x,s,p,t,akz){
+  const a=klemm(p*3);
+  const becken=(stand,heiss)=>{ // stand: Wasserspiegel y, heiss: 0..1
+    kasten(x,110,50,140,160,1,null,8); block(x,112,stand,136,208-stand,C.blau,.22,4);
+    for(let i=0;i<4;i++){const l=130+i*30; block(x,l,68,12,130,C.gold,1,3); const frei=Math.max(0,Math.min(130,stand-68)); block(x,l,68,12,Math.max(frei,130*heiss*(frei?1:0)),C.rot,frei?heiss:0,3); if(!frei&&heiss>0)block(x,l,68,12,130,C.rot,heiss*.8,3);}
+  };
+  if(s===0){becken(58,0); [136,166,196,226].forEach((cx,i)=>{const f=(t*.6+i*.25)%1; ring(x,cx,133,10+f*12,C.gold,(1-f)*.7*a,1.5)});
+    pille(x,180,22,"keine Spaltung mehr",C.gruen,a); pille(x,180,236,"Spaltprodukte zerfallen → Wärme",C.gold,klemm(p*3-1));}
+  else if(s===1){
+    schrift(x,"volle Leistung · 100 %",180,58,C.grau,10,a); block(x,60,68,240,26,C.gold,a);
+    schrift(x,"Nachwärme direkt nach dem Abschalten · 6 %",180,128,C.grau,10,klemm(p*3-.8)); block(x,60,138,14.4*weich(klemm(p*3-.8)),26,akz,1,2);
+    pille(x,180,204,"über 200 Megawatt",akz,klemm(p*3-1.6)); pille(x,180,232,"so viel wie 100.000 Wasserkocher",C.text,klemm(p*3-2));
+  }else if(s===2){
+    const W=[["sofort","6 %",120],["1 Stunde","1,5 %",30],["1 Tag","0,5 %",10],["1 Woche","0,3 %",6]];
+    linie(x,[[40,220],[320,220]],C.grau,1,1.2);
+    W.forEach((w,i)=>{const b=weich(klemm(p*5-i*.9)), cx=75+i*70; block(x,cx-18,220-w[2]*b,36,w[2]*b,akz,1,2); schrift(x,w[1],cx,208-w[2]*b,C.text,11,b,700); schrift(x,w[0],cx,234,C.grau,10,1);});
+    pille(x,180,24,"Nachwärme in Prozent der vollen Leistung",C.text,a); pille(x,180,262,"sinkt schnell, hört aber lange nicht auf",akz,klemm(p*5-4));
+  }else if(s===3){
+    const h=weich(p); becken(58,h*.6); rahmen(x,283,58,16,144,C.grau,1,6); block(x,286,198-136*(.2+.6*h),10,136*(.2+.6*h),C.rot,1,4); schrift(x,"Temperatur",296,216,C.grau,9,1);
+    pille(x,180,22,"kein Schalter stoppt diese Wärme",C.text,a); pille(x,180,246,"ohne Kühlung steigt die Temperatur",akz,klemm(p*3-1));
+  }else{
+    const h=weich(klemm(p*1.3)); becken(misch(58,176,h),h); for(let k=0;k<5;k++)ring(x,125+k*27,misch(58,176,h)-6-((t*20+k*9)%18),2.2,C.text,.6*h,1);
+    pille(x,180,22,"KERNSCHMELZE",akz,klemm(p*4-2.6)); pille(x,180,234,"1.200 °C: Hüllrohre zerfallen",C.gold,klemm(p*4-1.4)); pille(x,180,260,"2.800 °C: Brennstoff schmilzt",akz,klemm(p*4-2.2));
+  }
+ },
+ notkuehlung(x,s,p,t,akz){
+  const a=klemm(p*3);
+  if(s<=2){
+    const a0=s===0?a:1, ST=[[30,50,100,63,[[74,63],[130,63],[130,120],[155,120]]],[286,50,260,63,[[286,63],[230,63],[230,120],[205,120]]],[30,200,100,213,[[74,213],[130,213],[130,170],[155,170]]],[286,200,260,213,[[286,213],[230,213],[230,170],[205,170]]]];
+    const aus=s===0&&p>.55?[1,2]:s===1&&p>.45?[0]:[];
+    if(s===1){block(x,177,34,6,52,C.grau,a,1); block(x,177,204,6,44,C.grau,a,1); block(x,18,142,128,6,C.grau,a,1); block(x,214,142,128,6,C.grau,a,1);}
+    ST.forEach((q,i)=>{const d=aus.includes(i)?.25:1; fluss(x,q[4],C.blau,d<1?0:t,a0*d,36); kasten(x,q[0],q[1],44,26,a0*d,"Wasser"); pumpe(x,q[2],q[3],a0*d);
+      if(aus.includes(i))kreuz(x,q[2],q[3],9,C.rot,1);
+      if(s===2)kasten(x,q[0]+2,q[1]+(i<2?34:-26),40,18,a,"Diesel",3);});
+    kasten(x,155,95,50,100,a0,null,18); for(let i=0;i<4;i++)block(x,165+i*8,140,5,40,C.gold,a0,1); schrift(x,"Reaktor",180,112,C.grau,9,a0);
+    if(s===0){pille(x,180,20,"4 gleiche Stränge",akz,a); pille(x,180,262,"2 von 4 reichen aus",C.gruen,p>.55?1:0);}
+    if(s===1){pille(x,180,20,"jeder Strang in einem eigenen Raum",C.text,a); pille(x,180,264,"ein Brand trifft nur einen Strang",C.gruen,p>.45?1:0);}
+    if(s===2){pille(x,180,20,"Netz fällt aus → Notstrom-Diesel starten",akz,a); pille(x,180,264,"Batterien überbrücken die ersten Sekunden",C.text,klemm(p*3-1.2));}
+  }else if(s===3){
+    const f=weich(klemm((p-.35)/.55)), sp=misch(110,150,f);
+    kasten(x,60,60,70,110,a,null,14); block(x,62,62,66,sp-62,C.gold,.3*a,12); block(x,62,sp,66,168-sp,C.blau,.35*a,6);
+    schrift(x,"Gas",95,82,C.gold,9,a,700); schrift(x,"Wasser + Bor",95,158,C.blau,9,a);
+    [80,110].forEach(cx=>pfeil(x,cx,92,cx,sp-4,C.gold,a*f));
+    kasten(x,220,80,60,130,a,null,20); for(let i=0;i<4;i++)block(x,232+i*10,140,6,50,C.gold,a,1); schrift(x,"Reaktor",250,104,C.grau,9,a);
+    fluss(x,[[95,170],[95,225],[250,225],[250,210]],C.blau,t,f,40);
+    pille(x,180,22,"DRUCKSPEICHER · ohne Pumpe, ohne Strom",akz,a); pille(x,180,258,"sinkt der Druck, strömt das Wasser von selbst",C.text,klemm(p*3-1.6));
+  }else{
+    const N=["Reaktor","Notkühlung","Kühlwasser","Fluss / Meer"], f=p>.5;
+    N.forEach((n,i)=>{const l=14+i*86; kasten(x,l,110,74,40,klemm(p*5-i*.5),n,6); if(i<3)pfeil(x,l+75,130,l+85,130,C.gold,klemm(p*5-i*.5-.4));
+      if(f&&(i===1||i===2)){rahmen(x,l-3,107,80,46,C.rot,1,8,2); kreuz(x,l+37,168,7,C.rot,1);}});
+    schrift(x,"Wärme →",180,92,C.gold,10,a,700);
+    pille(x,180,24,"die Wärme braucht einen Weg nach draußen",C.text,a); pille(x,180,220,"Fukushima: Flutwelle zerstörte Notstrom und Pumpen",akz,f?1:0);
+  }
+ },
+ unfaelle(x,s,p,t,akz){
+  const a=klemm(p*4);
+  const karten=(tl,tr,L,Rr,fl,fr)=>{kasten(x,20,44,155,160,a,null,10); kasten(x,185,44,155,160,a,null,10);
+    schrift(x,tl,97,62,fl,11,a,700); schrift(x,tr,262,62,fr,11,a,700);
+    L.forEach((z,i)=>{const b=klemm(p*6-1-i*.7); schrift(x,z,97,90+i*24,z==="↓"?C.grau:C.text,10,b); schrift(x,Rr[i],262,90+i*24,Rr[i]==="↓"?C.grau:C.text,10,b)});};
+  if(s===0){
+    karten("WASSER-REAKTOR","TSCHERNOBYL",["mehr Dampf","↓","weniger Leistung","↓","bremst sich selbst"],["mehr Dampf","↓","mehr Leistung","↓","noch mehr Dampf"],C.gruen,akz);
+    pille(x,180,236,"und: kein Sicherheitsbehälter",akz,klemm(p*4-3));
+  }else if(s===1){
+    const u1=klemm(p*1.25), q=[]; achsen(x,a);
+    for(let u=0;u<=Math.min(u1,.86)+1e-6;u+=.01)q.push([50+280*u,u<.6?205+6*Math.sin(u*9):Math.max(46,205-160*Math.pow((u-.6)/.25,3))]);
+    linie(x,q,akz,1,2.5); schrift(x,"Versuch bei niedriger Leistung",140,186,C.grau,9,a);
+    pille(x,215,24,"26. April 1986, 1:23 Uhr",C.text,a); pille(x,180,264,"Leistung steigt in Sekunden auf ein Vielfaches",akz,u1>=.86?1:0);
+  }else if(s<=3){
+    const q=s===3?weich(klemm((p-.15)/.6)):0, vorn=misch(0,226,q), hoch=misch(205,150,q);
+    linie(x,[[150,200],[360,200]],C.text,1,1.5); block(x,0,205,150,75,C.blau,.35,0);
+    if(q>0){x.save();x.globalAlpha=.45;x.fillStyle=C.blau;x.beginPath();x.moveTo(0,205);x.lineTo(0,hoch);x.quadraticCurveTo(vorn*.7,hoch-10,vorn,q<.6?205:198);x.lineTo(vorn,205);x.closePath();x.fill();x.restore();}
+    block(x,150,180,8,25,C.grau,1,1); kasten(x,230,110,80,90,1,"Reaktor",6);
+    rahmen(x,170,203,56,28,C.grau,1,2); block(x,171,204,54,26,C.blau,.5*klemm(q*2.5-1.3),1); kasten(x,176,208,44,18,q>.9?.4:1,"Diesel",3);
+    if(q>.9)kreuz(x,198,217,8,akz,1);
+    schrift(x,"Meer",60,250,C.blau,10,1); schrift(x,"Mauer: ca. 6 m",196,246,C.grau,9,1);
+    if(s===2){pille(x,112,40,"Erdbeben → Abschaltung klappt",C.gruen,a); pille(x,112,68,"Notstrom-Diesel laufen",C.gruen,klemm(p*4-1.5));}
+    else{schrift(x,"Welle: ca. 14 m",70,134,C.blau,10,klemm(q*3-1),700); pille(x,112,40,"Diesel überflutet → kein Strom",akz,q>.9?1:0); pille(x,112,68,"keine Kühlung → Kernschmelze",akz,klemm(p*5-4));}
+  }else{
+    karten("TSCHERNOBYL 1986","FUKUSHIMA 2011",["andere Bauart","Regeln verletzt","Leistung","außer Kontrolle","kein Schutzbehälter"],["Erdbeben + Flutwelle","Mauer zu niedrig","Notstrom","überflutet","Kühlung fiel aus"],akz,akz);
+    pille(x,180,236,"immer: abschalten, kühlen, einschließen",C.gruen,klemm(p*4-3));
+  }
+ },
+ dwr(x,s,p,t,akz){
+  const a=s===0?klemm(p*3):1, sek=s<2?0:s===2?klemm(p*3):1, kuehl=s<3?0:s===3?klemm(p*3):1;
+  rahmen(x,12,40,150,200,s===4?C.rot:C.grau,a*(s===4?1:.7),14,s===4?2.2:1.2,[5,4]);
+  schrift(x,"Sicherheitsbehälter",87,230,s===4?C.rot:C.grau,9,a);
+  kasten(x,30,110,40,110,a,null,10); for(let i=0;i<4;i++)block(x,38+i*7,165,4,42,C.gold,a,1);
+  kasten(x,110,70,36,130,a,null,14);
+  if(s===1)rahmen(x,106,66,44,138,akz,klemm(p*3),17,2);
+  fluss(x,[[70,130],[120,130],[120,92],[128,92]],C.rot,t,a,40); fluss(x,[[128,92],[136,92],[136,190],[70,190]],C.blau,t,a,40);
+  pumpe(x,92,190,a);
+  schrift(x,"Reaktor",50,100,C.grau,9,a); schrift(x,"Dampferzeuger",124,212,C.grau,9,a);
+  maschinen(x,t,a*(s<2?.3:1),sek,kuehl,[[140,70],[140,52]],[[146,165]]);
+  if(s===0)pille(x,180,18,"PRIMÄRKREIS · 155 bar · 325 °C",C.rot,klemm(p*3-.6));
+  if(s===1)pille(x,180,18,"DAMPFERZEUGER · Wärme wechselt den Kreislauf",akz,klemm(p*3));
+  if(s===2)pille(x,180,18,"SEKUNDÄRKREIS · Dampf mit 65 bar",C.text,klemm(p*3));
+  if(s===3)pille(x,180,18,"KÜHLKREIS · führt die Abwärme ab",C.violett,klemm(p*3));
+  if(s===4){pille(x,180,18,"radioaktiv nur im Sicherheitsbehälter",C.rot,klemm(p*3)); pille(x,150,268,"Turbine bekommt sauberen Dampf",C.gruen,klemm(p*3-1.2));}
+ },
+ swr(x,s,p,t,akz){
+  if(s===4){
+    const Z=[["2 Kreisläufe","1 Kreislauf"],["155 bar","70 bar"],["Wasser kocht nicht","Wasser kocht"],["Stäbe von oben","Stäbe von unten"],["Turbine sauber","Turbine radioaktiv"]];
+    kasten(x,20,40,155,165,klemm(p*4),null,10); kasten(x,185,40,155,165,klemm(p*4),null,10);
+    schrift(x,"DRUCKWASSER",97,60,C.gold,11,klemm(p*4),700); schrift(x,"SIEDEWASSER",262,60,akz,11,klemm(p*4),700);
+    Z.forEach((z,i)=>{const b=klemm(p*7-1-i*.8); schrift(x,z[0],97,88+i*24,C.text,10,b); schrift(x,z[1],262,88+i*24,C.text,10,b)});
+    pille(x,180,236,"beide: Wasser kühlt und bremst Neutronen",C.text,klemm(p*4-3)); return;
+  }
+  const a=s===0?klemm(p*3):1, sek=s<1?0:s===1?klemm(p*3):1;
+  rahmen(x,15,45,105,200,C.grau,a*.7,14,1.2,[5,4]); schrift(x,"Sicherheitsbehälter",67,37,C.grau,9,a);
+  kasten(x,42,75,50,145,a,null,18); block(x,44,125,46,93,C.blau,.22*a,14);
+  for(let i=0;i<5;i++)block(x,50+i*8,160,5,45,C.gold,a,1);
+  for(let k=0;k<8;k++)ring(x,50+(k*17)%36,125+(((k*23-t*25)%60)+60)%60,2.4,C.text,a*.7,1);
+  if(s===3){const tip=misch(225,168,weich(p)); [54,70,86].forEach(cx=>block(x,cx-1.5,tip,3,255-tip,C.violett,1,1));
+    linie(x,[[48,100],[55,94],[62,100],[69,94],[76,100],[83,94],[88,100]],C.text,klemm(p*3),1.4); pille(x,152,100,"Dampftrockner",C.text,klemm(p*3));
+    pille(x,120,268,"Steuerstäbe von unten",C.violett,klemm(p*3-1));}
+  if(s!==3)schrift(x,"Reaktor",67,212,C.grau,9,a);
+  maschinen(x,t,a*(s<1?.3:1),sek,sek,[[67,75],[67,52]],[[150,165],[150,200],[92,200]]);
+  if(s===2)rahmen(x,196,44,88,146,C.rot,klemm(p*3),8,1.8,[5,4]);
+  if(s===0)pille(x,180,18,"SIEDEWASSER · 70 bar · 285 °C",akz,klemm(p*3-.6));
+  if(s===1)pille(x,180,18,"Dampf direkt zur Turbine · kein Dampferzeuger",akz,klemm(p*3));
+  if(s===2)pille(x,180,18,"auch die Turbine wird radioaktiv",C.rot,klemm(p*3));
+  if(s===3)pille(x,180,18,"oben ist kein Platz für Steuerstäbe",C.text,klemm(p*3));
+ },
+ dampferzeuger(x,s,p,t,akz){
+  const a=klemm(p*3);
+  if(s===4){
+    block(x,60,70,100,140,C.rot,.22*a,6); block(x,174,70,126,140,C.blau,.2*a,6); block(x,160,66,14,148,C.grau,a,2);
+    schrift(x,"Reaktorwasser",110,92,C.rot,10,a,700); schrift(x,"325 °C",110,108,C.rot,10,a);
+    schrift(x,"Speisewasser",237,92,C.blau,10,a,700); schrift(x,"wird zu Dampf",237,108,C.blau,10,a);
+    [138,164,190].forEach((y,i)=>{const f=(t*.5+i/3)%1; pfeil(x,118+f*30,y,160+f*30+16,y,C.gold,a*(1-Math.abs(f-.5)*1.4))});
+    pille(x,167,236,"Rohrwand: nur ca. 1 mm",C.text,klemm(p*3-1)); pille(x,180,30,"dünn für die Wärme, dicht für die Sicherheit",akz,a); return;
+  }
+  const a0=s===0?a:1;
+  kasten(x,130,30,100,215,a0,null,40);
+  if(s>=2)block(x,132,118,96,107,C.blau,.2*(s===2?a:1),4);
+  block(x,132,225,96,4,C.text,a0,1);
+  for(let k=0;k<3;k++){const xl=150+k*10,xr=210-k*10,o=80+k*14;
+    if(s===0)linie(x,[[xl,225],[xl,o],[xr,o],[xr,225]],C.grau,a0,2);
+    else{fluss(x,[[xl,225],[xl,o],[180,o]],C.rot,t,1,35,30,2); fluss(x,[[180,o],[xr,o],[xr,225]],C.blau,t,1,35,30,2);}}
+  if(s>=1){const b=s===1?a:1; pfeil(x,100,238,140,238,C.rot,b); pfeil(x,220,238,262,238,C.blau,b);}
+  if(s>=2){const b=s===2?a:1; pfeil(x,275,150,233,150,C.blau,b);
+    for(let k=0;k<7;k++)ring(x,140+((k*29)%80),118+(((k*31-t*22)%90)+90)%90,2.4,C.text,b*.7,1);}
+  if(s>=3){linie(x,[[150,62],[160,55],[170,62],[180,55],[190,62],[200,55],[210,62]],C.text,a,1.6); pfeil(x,180,34,180,8,C.text,a);}
+  if(s===0){pille(x,62,110,"20 m hoch",C.text,a); pille(x,298,110,"4.000 Rohre",akz,a); pille(x,180,266,"jedes Rohr ein umgedrehtes U",C.text,klemm(p*3-1));}
+  if(s===1){pille(x,58,218,"rein: 325 °C",C.rot,a); pille(x,302,218,"raus: 290 °C",C.blau,a); pille(x,180,266,"Reaktorwasser fließt innen durch die Rohre",C.text,klemm(p*3-1));}
+  if(s===2){pille(x,300,126,"Speisewasser",C.blau,a); pille(x,300,174,"220 °C",C.blau,a); pille(x,180,266,"außen an den Rohren kocht das Wasser",C.text,klemm(p*3-1));}
+  if(s===3){pille(x,62,60,"Abscheider",C.text,a); pfeil(x,105,60,128,60,C.grau,a); pille(x,290,20,"Dampf: 280 °C",akz,a); pille(x,180,266,"Tropfen bleiben drin, Dampf geht raus",C.text,klemm(p*3-1));}
+ },
+ turbine(x,s,p,t,akz){
+  const a=klemm(p*3);
+  if(s===0){
+    const w=t*2.2; ring(x,180,140,62,C.grau,a,1.2);
+    for(let k=0;k<12;k++){const g=w+k*Math.PI/6; linie(x,[[180+14*Math.cos(g),140+14*Math.sin(g)],[180+57*Math.cos(g+.28),140+57*Math.sin(g+.28)]],C.text,a,4);}
+    kugel(x,180,140,12,C.grau,a);
+    [[30,100,104,118],[26,140,100,140],[30,180,104,162]].forEach(q=>pfeil(x,q[0],q[1],q[2],q[3],akz,a));
+    pille(x,180,30,"Dampf drückt auf die Schaufeln",akz,a); pille(x,180,252,"aus Wärme wird Drehung",C.text,klemm(p*3-1));
+  }else if(s<=2){
+    const a1=s===1?a:1; block(x,30,136,300,8,C.grau,a1,3);
+    const stufe=(x0,n,h0,h1)=>{for(let i=0;i<n;i++){const h=misch(h0,h1,i/(n-1)); block(x,x0+i*9,140-h,5,2*h,C.text,a1*(.65+.35*Math.sin(t*18+i*1.7)),1)}};
+    stufe(60,4,14,22); stufe(118,5,22,50); stufe(183,5,22,50); kasten(x,250,112,70,56,a1,"Generator");
+    pfeil(x,44,92,60,118,akz,a1);
+    schrift(x,"Hochdruck",76,106,C.grau,9,a1); schrift(x,"Niederdruck",184,78,C.grau,9,a1);
+    if(s===1){pille(x,180,26,"Dampf dehnt sich aus → Schaufeln werden länger",akz,a); pille(x,180,236,"letzte Schaufeln: über 1 m lang",C.text,klemm(p*3-1));}
+    else{pille(x,180,26,"1.500 Umdrehungen pro Minute",akz,a); pille(x,180,236,"Welle mit Generator: über 50 m lang",C.text,klemm(p*3-1));}
+  }else if(s===3){
+    rahmen(x,110,80,140,120,C.gold,a,12,6); schrift(x,"Kupferspule",180,66,C.gold,10,a);
+    x.save(); x.globalAlpha=a; x.translate(180,140); x.rotate(t*3); x.fillStyle=C.rot; x.fillRect(-36,-10,36,20); x.fillStyle=C.blau; x.fillRect(0,-10,36,20);
+    x.fillStyle=C.bg; x.font='700 11px "JetBrains Mono",monospace'; x.textAlign="center"; x.textBaseline="middle"; x.fillText("N",-18,.5); x.fillText("S",18,.5); x.restore();
+    const q=[]; for(let i=0;i<=70;i++)q.push([110+i*2,240+12*Math.sin(i*.26-t*6)]); linie(x,q,C.gold,klemm(p*3-.8),2);
+    pille(x,300,240,"50 Hertz",C.gold,klemm(p*3-.8)); pille(x,180,30,"Magnet dreht sich in einer Kupferspule",akz,a);
+  }else{
+    schrift(x,"1.400 MW",180,56,akz,30,a,700); schrift(x,"Strom aus einem großen Kernkraftwerk",180,84,C.grau,10,a);
+    const n=Math.round(30*klemm((p-.15)/.6)); for(let i=0;i<n;i++)haus(x,62+(i%10)*24,110+((i/10)|0)*28,C.gold,1);
+    pille(x,180,214,"genug für rund 3 Millionen Haushalte",C.text,n===30?1:0); schrift(x,"1 Haus = 100.000 Haushalte",180,242,C.grau,10,n===30?1:0);
+  }
+ },
+ kuehlturm(x,s,p,t,akz){
+  const a=klemm(p*3);
+  if(s<=1){
+    const a0=s===0?a:1; kasten(x,90,80,180,120,a0,null,10);
+    [105,130,155,180].forEach(y=>fluss(x,[[60,y],[300,y]],C.violett,t,a0,30,34,2.2));
+    [130,180,230].forEach(cx=>pfeil(x,cx,40,cx,76,C.text,a0));
+    for(let k=0;k<6;k++)kugel(x,108+k*28,184+((t*26+k*7)%14),1.8,C.blau,a0);
+    pfeil(x,180,202,180,238,C.blau,a0); schrift(x,"Kühlwasser",318,92,C.violett,9,a0);
+    if(s===0){pille(x,180,22,"Dampf von der Turbine · ca. 35 °C",C.text,a); pille(x,180,256,"wird wieder zu Wasser",C.blau,klemm(p*3-1));}
+    else{pille(x,180,22,"fast ein Vakuum · 0,05 bar",akz,a); pille(x,180,256,"der Sog zieht den Dampf durch die Turbine",C.text,klemm(p*3-1));}
+  }else if(s<=3){
+    const a0=s===2?a:1;
+    if(s===3){wolke(x,172,34,a,2.2); wolke(x,208,24,a,1.7);}
+    turm(x,180,60,235,a0,75,30,50);
+    linie(x,[[128,170],[232,170]],C.violett,a0,2.5);
+    for(let k=0;k<9;k++)kugel(x,134+k*11.5,174+((t*34+k*17)%50),1.8,C.blau,a0);
+    block(x,112,228,136,5,C.blau,a0*.7,2);
+    pfeil(x,58,170,124,170,C.rot,a0); schrift(x,"warm",76,160,C.rot,9,a0);
+    pfeil(x,252,232,312,232,C.blau,a0); schrift(x,"kühl",296,222,C.blau,9,a0);
+    pfeil(x,84,258,112,240,C.grau,a0); schrift(x,"Luft",72,264,C.grau,9,a0);
+    pfeil(x,160,160,160,112,C.grau,a0); pfeil(x,200,160,200,112,C.grau,a0);
+    if(s===2){pille(x,180,24,"KÜHLTURM · rund 160 m hoch",akz,a); pille(x,214,268,"Verdunstung kühlt das Wasser",C.text,klemm(p*3-1));}
+    else{pille(x,298,100,"nur Wasserdampf",C.text,a); pille(x,298,126,"nicht radioaktiv",C.gruen,klemm(p*3-.8));}
+  }else{
+    const u=weich(klemm((p-.25)/.6)), e=klemm(u*3-2);
+    schrift(x,"Wärme aus dem Reaktor · 100 %",180,56,C.gold,11,a,700); block(x,45,68,270,24,C.gold,a);
+    pfeil(x,180,98,180,126,C.grau,a);
+    block(x,45,134,90*u,24,C.gruen,1); block(x,137,134,178*u,24,C.grau,.7);
+    pille(x,90,184,"1/3 Strom",C.gruen,e); pille(x,226,184,"2/3 Abwärme",C.grau,e);
+    pille(x,180,236,"gilt ähnlich für jedes Wärmekraftwerk",C.text,klemm(p*4-3));
+  }
+ },
+ brennstab(x,s,p,t,akz){
+  const a=klemm(p*3);
+  if(s===0){
+    tablette(x,180,135,56,60,a); pille(x,180,60,"URAN-TABLETTE",akz,a); pille(x,180,215,"ca. 1 cm groß",C.text,klemm(p*3-1));
+  }else if(s===1){
+    rahmen(x,168,34,24,212,C.text,a,8,1.6);
+    const n=Math.round(17*klemm(p*1.4)); for(let i=0;i<n;i++)block(x,172,231-i*11.5,16,10,C.grau,1,2);
+    pille(x,84,90,"Hüllrohr aus Metall",C.text,a); pfeil(x,156,90,166,90,C.grau,a);
+    const b=klemm(p*3-.8); pille(x,84,180,"Uran-Tabletten",akz,b); pfeil(x,140,180,170,180,C.grau,b);
+    pille(x,280,110,"rund 4 m lang",C.text,klemm(p*3-1.4)); pille(x,280,140,"nur 1 cm dick",C.text,klemm(p*3-1.6));
+    schrift(x,"(im Bild stark verkürzt)",180,266,C.grau,10,a);
+  }else if(s===2){
+    const b=klemm(p*3-1);
+    block(x,72,46,136,12,C.text,a*.85,3); block(x,72,222,136,12,C.text,a*.85,3);
+    for(let i=0;i<9;i++)block(x,80+i*15,58,7,164,C.grau,a,2);
+    [88,138,188].forEach(y=>block(x,72,y,136,8,akz,a,2));
+    pille(x,295,138,"Abstandshalter",akz,b); pfeil(x,240,142,212,142,C.grau,b);
+    pfeil(x,56,214,56,70,C.blau,b);
+    pille(x,180,20,"BRENNELEMENT · 200 bis 300 Stäbe",akz,a); pille(x,180,258,"Wasser strömt zwischen den Stäben nach oben",C.blau,b);
+  }else{
+    const Z=[7,11,13,13,15,15,15,15,15,15,15,13,13,11,7], zeig=Math.round(193*klemm(p*1.3)); let nr=0;
+    Z.forEach((n,r)=>{for(let c=0;c<n;c++){if(nr++<zeig)block(x,90+((15-n)/2+c)*12,50+r*12,11,11,akz,.9,2)}});
+    pille(x,180,22,"REAKTORKERN · von oben",C.text,a); pille(x,180,258,"193 Brennelemente · rund 100 t Uran",akz,klemm(p*3-1.8));
+  }
+ },
+ moderator(x,s,p,t,akz){
+  const KX=300,KY=140, WEG=[[20,60],[90,110],[150,70],[200,160],[140,205],[230,215]];
+  const auf=(pkt,q)=>{const L=[];let sum=0;for(let i=1;i<pkt.length;i++){const d=Math.hypot(pkt[i][0]-pkt[i-1][0],pkt[i][1]-pkt[i-1][1]);L.push(d);sum+=d}
+    let rest=q*sum;const bis=[pkt[0]];
+    for(let i=0;i<L.length;i++){if(rest<=L[i]){const f=rest/L[i];bis.push([misch(pkt[i][0],pkt[i+1][0],f),misch(pkt[i][1],pkt[i+1][1],f)]);return bis}rest-=L[i];bis.push(pkt[i+1])}
+    return bis};
+  if(s===3){
+    const a=klemm(p*3), b=klemm(p*3-1), c=klemm(p*3-1.6);
+    rahmen(x,20,52,150,120,C.grau,a); rahmen(x,190,52,150,120,C.grau,a);
+    schrift(x,"normal",95,40,C.text,11,a,700); schrift(x,"zu heiß",265,40,C.rot,11,a,700);
+    for(let i=0;i<12;i++)wasser(x,40+(i%4)*37+(i%3)*3,72+((i/4)|0)*38+(i%2)*5,i*1.3,a);
+    [[215,82],[302,98],[240,150],[320,152]].forEach((m,i)=>wasser(x,m[0],m[1],i*2.1,a));
+    [[262,80,9],[280,130,12],[215,125,8],[315,70,7],[262,156,6]].forEach(q=>ring(x,q[0],q[1],q[2],C.grau,a*.8,1.2));
+    pille(x,95,190,"bremst gut",akz,b); pille(x,265,190,"bremst schlecht",C.rot,b);
+    pille(x,95,216,"viele Spaltungen",C.text,c); pille(x,265,216,"wenige Spaltungen",C.text,c);
+    pille(x,180,256,"Leistung sinkt von selbst",C.gruen,klemm(p*3-2)); return;
+  }
+  if(s>=1){const a=s===1?klemm(p*3):1; MOL.forEach(m=>wasser(x,m[0],m[1],m[2],a));}
+  let zit=0;
+  if(s===0){
+    const q=klemm(p*1.5), nx=misch(10,350,q), ny=misch(118,84,q);
+    linie(x,[[10,118],[nx,ny]],C.blau,.5,2,[3,4]); if(q<1)kugel(x,nx,ny,4.2,C.blau);
+    pille(x,180,20,"schnelles Neutron · 20.000 km/s",C.blau,klemm(p*4)); pille(x,KX,202,"fliegt vorbei",C.rot,q>=1?1:0);
+  }else if(s===1){
+    const q=1-Math.pow(1-klemm(p*1.1),2), bis=auf(WEG,q), e=bis[bis.length-1];
+    linie(x,bis,C.blau,.5,2,[3,4]); kugel(x,e[0],e[1],4.2,C.blau);
+    pille(x,180,18,"WASSER BREMST · Stoß für Stoß",akz,klemm(p*3)); pille(x,150,262,"jeder Stoß nimmt Tempo weg",C.text,klemm(p*3-1.5));
+  }else{
+    const u=klemm(p/.45); linie(x,WEG,C.blau,.3,2,[3,4]);
+    if(u<1)kugel(x,misch(230,KX-24,u),misch(215,KY+12,u),4.2,C.blau);
+    else{zit=Math.sin(t*30)*1.4; ring(x,KX,KY,33+Math.sin(t*8)*2,C.gold,.8); pille(x,KX,202,"Spaltung",C.gold);}
+    pille(x,180,18,"langsames Neutron · 2 km/s",C.blau,klemm(p*4));
+  }
+  haufen(x,KX+zit,KY,24,30,3.6); schrift(x,"Uran-235",KX,178,C.grau,10);
+ },
+ steuerstab(x,s,p,t,akz){
+  const e=s===0?.5:s===1?misch(.5,.85,weich(p)):s===2?misch(.85,.2,weich(p)):misch(.2,1,weich(klemm(p*1.5)));
+  const a=s===0?klemm(p*3):1, tip=misch(112,232,e), n=Math.round(24*(1-e));
+  block(x,60,110,180,130,C.flaeche2,a,6); rahmen(x,60,110,180,130,C.grau,a,6);
+  for(let i=0;i<6;i++)block(x,75+i*30,120,10,112,C.gold,a,3);
+  for(let i=0;i<n;i++){const hx=Math.abs(Math.sin(i*12.9898)*43758.5)%1, hy=Math.abs(Math.sin(i*78.233)*12345.6)%1;
+    kugel(x,66+((hx*168+t*18*(i%3+1))%168),116+((hy*118+t*13*(i%4+1))%118),2.6,C.blau,a);}
+  [95,155,215].forEach(cx=>{block(x,cx-1,0,2,Math.max(0,tip-112),C.violett,a,0); block(x,cx-4,tip-112,8,112,C.violett,a,3)});
+  rahmen(x,22,110,18,130,C.grau,a,4); block(x,24,238-126*(1-e),14,126*(1-e),akz,a,3); schrift(x,"Leistung",34,98,C.grau,10,a);
+  pille(x,300,60,"Steuerstäbe",C.violett,a); pfeil(x,254,60,222,60,C.grau,a);
+  pille(x,300,200,"Brennstäbe",C.gold,a); pfeil(x,257,200,239,200,C.grau,a);
+  if(s===0)pille(x,180,262,"Steuerstäbe schlucken Neutronen",C.violett,klemm(p*3-1));
+  if(s===1)pille(x,180,262,"tiefer rein → weniger Leistung",C.text,klemm(p*3));
+  if(s===2)pille(x,180,262,"weiter raus → mehr Leistung",C.text,klemm(p*3));
+  if(s===3)pille(x,180,262,"ganz drin → Kettenreaktion aus",C.rot,klemm(p*3-1.5));
+ },
+ behaelter(x,s,p,t,akz){
+  const a=s===0?klemm(p*3):1;
+  if(s>=2){x.save();x.globalAlpha=.16*(s===2?klemm(p*3):1);x.fillStyle=C.blau;x.beginPath();x.roundRect(125,40,110,205,48);x.fill();x.restore();}
+  block(x,98,100,24,16,C.grau,a,2); block(x,238,100,24,16,C.grau,a,2);
+  rahmen(x,125,40,110,205,C.grau,a,48,7); block(x,120,84,120,5,C.grau,a,2);
+  if(s>=1){const b=s===1?klemm(p*3):1; for(let i=0;i<7;i++)block(x,150+i*10,150,6,66,C.gold,b,2); [163,183,203].forEach(cx=>block(x,cx-1.5,14,3,138,C.violett,b,1));}
+  if(s===0){
+    pfeil(x,278,142,278,42,C.grau,a); pfeil(x,278,142,278,243,C.grau,a); pille(x,320,142,"12 m",C.text,a);
+    pille(x,180,266,"Wand: 25 cm Stahl · 5 m Durchmesser",akz,klemm(p*3-1));
+  }else if(s===1){
+    const b=klemm(p*3-.6);
+    pille(x,300,60,"Steuerstäbe",C.violett,b); pfeil(x,254,60,208,60,C.grau,b);
+    pille(x,302,185,"Brennelemente",C.gold,b); pfeil(x,249,185,218,185,C.grau,b);
+    pille(x,52,62,"Deckel",C.text,b); pfeil(x,82,62,120,62,C.grau,b);
+    pille(x,180,266,"Kern unten, Steuerstäbe von oben",C.text,klemm(p*3-1.4));
+  }else if(s===2){
+    const f=p*4;
+    pfeil(x,62,108,116,108,C.blau,klemm(f)); pfeil(x,137,122,137,228,C.blau,klemm(f-.6));
+    pfeil(x,180,228,180,124,C.rot,klemm(f-1.2)); pfeil(x,244,108,298,108,C.rot,klemm(f-1.8));
+    pille(x,58,84,"rein: 290 °C",C.blau,klemm(f)); pille(x,302,84,"raus: 325 °C",C.rot,klemm(f-1.8));
+    pille(x,180,266,"Wasser holt die Wärme aus dem Kern",C.text,klemm(f-2.6));
+  }else{
+    const b=klemm(p*3);
+    pfeil(x,152,128,135,128,C.gold,b); pfeil(x,208,128,225,128,C.gold,b); pfeil(x,165,231,142,231,C.gold,b); pfeil(x,195,231,218,231,C.gold,b);
+    pille(x,302,128,"155 bar",C.gold,b); pille(x,180,266,"Druck hält 325 °C heißes Wasser flüssig",C.text,klemm(p*3-1.2));
+  }
+ },
+ kritisch(x,s,p,t,akz){
+  const achsen=a=>{pfeil(x,50,230,50,44,C.grau,a); pfeil(x,50,230,338,230,C.grau,a); schrift(x,"Leistung",50,32,C.grau,10,a); schrift(x,"Zeit",322,244,C.grau,10,a)};
+  const kv=(fn,u1)=>{const q=[];for(let u=0;u<=u1+1e-6;u+=.02)q.push([50+280*u,fn(u)]);return q};
+  if(s===0){
+    const a=klemm(p*3);
+    schrift(x,"Spaltungen jetzt",90,98,C.grau,10,a); block(x,50,110,80,50,akz,a,6); schrift(x,"100",90,136,C.bg,20,a,700);
+    pfeil(x,140,135,215,135,C.grau,klemm(p*3-.6)); pille(x,178,116,"× k",akz,klemm(p*3-.6));
+    schrift(x,"nächste Runde",265,98,C.grau,10,klemm(p*3-1)); rahmen(x,225,110,80,50,C.text,klemm(p*3-1),6,1.4,[4,4]); schrift(x,"?",265,136,C.text,22,klemm(p*3-1),700);
+    pille(x,180,198,"k = 0,9 → 90 · es wird weniger",C.blau,klemm(p*4-1.6));
+    pille(x,180,224,"k = 1 → 100 · es bleibt gleich",C.gruen,klemm(p*4-2.2));
+    pille(x,180,250,"k = 1,1 → 110 · es wird mehr",C.gold,klemm(p*4-2.8));
+  }else if(s<=3){
+    const a=s===1?klemm(p*4):1, u1=klemm(p*1.3);
+    achsen(a);
+    linie(x,kv(u=>230-80*Math.exp(-3*u),s===1?u1:1),C.blau,s===1?1:.45,2.5); pille(x,300,208,"k < 1",C.blau,s===1?(u1>=1?1:0):.6);
+    if(s>=2){linie(x,kv(()=>150,s===2?u1:1),C.gruen,s===2?1:.45,2.5); pille(x,300,136,"k = 1",C.gruen,s===2?(u1>=1?1:0):.6);}
+    if(s===3){linie(x,kv(u=>150-90*(Math.exp(1.6*u)-1)/(Math.exp(1.6)-1),u1),C.gold,1,2.5); pille(x,262,62,"k > 1",C.gold,u1>=1?1:0);}
+    kugel(x,50,150,3.5,C.text,a);
+    pille(x,215,22,["unterkritisch · Leistung fällt","kritisch · Leistung bleibt gleich","überkritisch · Leistung steigt"][s-1],[C.blau,C.gruen,C.gold][s-1],klemm(p*4));
+  }else{
+    const q=[]; achsen(1);
+    for(let v=0;v<=1.001;v+=.05)q.push([50+60*v,170]);
+    for(let v=0;v<=1.001;v+=.05)q.push([110+50*v,170-60*weich(v)]);
+    for(let v=0;v<=1.001;v+=.05)q.push([160+60*v,110]);
+    for(let v=0;v<=1.001;v+=.05)q.push([220+50*v,110+40*weich(v)]);
+    for(let v=0;v<=1.001;v+=.05)q.push([270+60*v,150]);
+    const f=klemm(p*1.25); linie(x,q.slice(0,Math.max(2,Math.round(q.length*f))),akz,1,2.5);
+    pille(x,80,188,"k = 1",C.gruen,f>.15?1:0); pille(x,112,120,"k > 1",C.gold,f>.35?1:0); pille(x,190,94,"k = 1",C.gruen,f>.55?1:0);
+    pille(x,268,108,"k < 1",C.blau,f>.75?1:0); pille(x,300,168,"k = 1",C.gruen,f>.95?1:0);
+    pille(x,215,22,"regeln: k kurz über oder unter 1",C.text,klemm(p*4));
+  }
+ },
+ atom(x,s,p,t,akz){
+  const MX=180,MY=138, A=s===3?1-klemm(p*3):1;
+  if(A>0){
+    const huelle=s===0?0:s===1?klemm(p*2):1;
+    [52,92].forEach((r,k)=>{
+      x.save();x.globalAlpha=.5*huelle*A;x.strokeStyle=C.grau;x.setLineDash([2,5]);x.lineWidth=1;x.beginPath();x.arc(MX,MY,r,0,6.2832);x.stroke();x.restore();
+      const n=k?5:2; for(let j=0;j<n;j++){const w=t*(k?.5:.9)+j*6.2832/n+k; kugel(x,MX+r*Math.cos(w),MY+r*Math.sin(w),4,C.gold,huelle*A)}
+    });
+    haufen(x,MX,MY,13,14,3.4,A*(s===0?klemm(p*2):1));
+    if(s===0){pille(x,MX,MY-38,"ATOMKERN",akz,klemm(p*3-.6)); legende(x,klemm(p*3-1.2));}
+    if(s===1){pille(x,MX,20,"HÜLLE · Elektronen, negativ",C.gold,klemm(p*3-.8)); pille(x,MX,260,"KERN · positiv",akz,klemm(p*3-1.4));}
+    if(s===2){pille(x,MX,20,"Kern: zehntausende Male kleiner als das Atom",C.text,klemm(p*3-.3)); pille(x,MX,260,"über 99,9 % der Masse im Kern",C.gold,klemm(p*3-1.3));}
+  }
+  if(s===3){
+    const a=klemm(p*3-1), Y=128;
+    schrift(x,"Wasserstoff",65,70,C.grau,11,a); schrift(x,"Kohlenstoff",172,70,C.grau,11,a); schrift(x,"Uran",285,70,C.grau,11,a);
+    kugel(x,65,Y,5,C.rot,a); haufen(x,172,Y,11,12,3.6,a); haufen(x,285,Y,30,60,3.6,a);
+    pille(x,65,190,"1 Proton",akz,a); pille(x,172,190,"6 Protonen",akz,a); pille(x,285,190,"92 Protonen",akz,a);
+    pille(x,180,240,"mehr Protonen = schwererer Stoff",C.text,klemm(p*3-2));
+  }
+ },
+ uran(x,s,p,t,akz){
+  if(s<=1){
+    const a=s===0?klemm(p*2):1, LX=95,RX=265,Y=128; let zit=0,u1=0,u2=0;
+    if(s===1){u1=klemm(p/.35); u2=klemm((p-.45)/.35); if(u2>=1){zit=Math.sin(t*30)*1.4; ring(x,RX,Y,42+Math.sin(t*8)*2,C.gold,.8)}}
+    haufen(x,LX,Y,34,48,4.2,a); haufen(x,RX+zit,Y,32,44,4.2,a);
+    if(s===1&&u1<1)kugel(x,misch(12,LX-40,u1),Y,4.2,C.blau);
+    if(s===1&&p>.45&&u2<1)kugel(x,misch(178,RX-38,u2),Y,4.2,C.blau);
+    pille(x,LX,66,"URAN-238",C.grau,a); pille(x,RX,66,"URAN-235",akz,a);
+    if(s===0){const b=klemm(p*3-1.2); pille(x,LX,190,"146 Neutronen",C.text,b); pille(x,RX,190,"143 Neutronen",C.text,b); pille(x,180,240,"beide: 92 Protonen",C.rot,klemm(p*3-1.8));}
+    else{pille(x,LX,190,"schluckt das Neutron",C.grau,u1>=1?1:0); pille(x,RX,190,"zerbricht",C.gruen,u2>=1?1:0);}
+  }else if(s<=3){
+    const n=s===2?7:7+Math.round(33*klemm(p*1.3)), a=s===2?klemm(p*2):1;
+    for(let i=0;i<1000;i++){const heiss=RANG[i]<n, cx=43+(i%40)*7, cy=62+((i/40)|0)*7;
+      x.globalAlpha=a*(heiss?1:.4); x.fillStyle=heiss?C.gold:C.grau; x.beginPath(); x.arc(cx,cy,heiss?3:1.9,0,6.2832); x.fill();}
+    x.globalAlpha=1;
+    pille(x,180,30,s===2?"NATURURAN":"ANGEREICHERT",akz,a);
+    pille(x,180,256,n+" von 1.000 sind Uran-235 · "+(n/10).toFixed(1).replace(".",",")+" %",C.gold,s===2?klemm(p*3-1):1);
+  }else{
+    const a=klemm(p*2);
+    x.save(); x.globalAlpha=a; x.fillStyle=C.grau; x.strokeStyle=C.text; x.lineWidth=1.4;
+    x.beginPath(); x.moveTo(145,100); x.lineTo(145,180); x.ellipse(180,180,35,10,0,Math.PI,0,true); x.lineTo(215,100); x.closePath(); x.fill(); x.stroke();
+    x.fillStyle=C.flaeche2; x.beginPath(); x.ellipse(180,100,35,10,0,0,6.2832); x.fill(); x.stroke(); x.restore();
+    pfeil(x,236,140,236,96,C.grau,a); pfeil(x,236,140,236,188,C.grau,a); schrift(x,"ca. 1 cm",276,140,C.text,11,a);
+    pille(x,180,50,"URANDIOXID-TABLETTE",akz,a); pille(x,180,232,"wenige Gramm · hart wie Keramik",C.text,klemm(p*3-1));
+  }
+ },
+ kette(x,s,p,t,akz){
+  const kern=(nx,ny,gespalten,seit,a)=>{
+    if(!gespalten)kugel(x,nx,ny,7,C.grau,a);
+    else{kugel(x,nx,ny-4,4.5,C.gold,a);kugel(x,nx,ny+4,4.5,C.gold,a); if(seit<1)ring(x,nx,ny,9+seit*10,C.gold,(1-seit)*a,1.5)}
+  };
+  const baum=s<3?1:1-klemm(p*4);
+  if(baum>0){
+    const g=s===0?p:s===1?1+p:s===2?2+2*p:4, pos=(k,j)=>[40+k*88,30+(j+.5)*230/(1<<k)];
+    if(g<.6)kugel(x,misch(4,31,g/.6),145,3,C.blau,baum);
+    for(let k=0;k<4;k++)for(let j=0;j<(1<<k);j++){const [nx,ny]=pos(k,j), seit=g-(k+.6); kern(nx,ny,seit>=0,seit/.3,baum);}
+    for(let k=0;k<4;k++){const u=klemm(g-(k+.6)); if(g<k+.6)continue;
+      pille(x,40+k*88,12,String(1<<k),C.gold,baum);
+      for(let j=0;j<(1<<k);j++){const [nx,ny]=pos(k,j);
+        for(let c=0;c<2;c++){
+          if(k<3){ if(u>=1)continue; const [tx,ty]=pos(k+1,2*j+c); kugel(x,misch(nx+8,tx-9,u),misch(ny,ty,u),3,C.blau,baum); }
+          else{ const v=klemm(u/.4); kugel(x,nx+10+v*16,ny+(c?1:-1)*(3+v*5),3,C.blau,baum); }
+        }}}
+    schrift(x,"oben: Zahl der Spaltungen je Runde",180,271,C.grau,10,baum*klemm(g*2-1.2));
+  }
+  if(s===3){
+    const a=klemm(p*4-1), h=klemm((p-.3)/.65)*4.5, Y=115, X=k=>50+k*80;
+    x.save(); x.globalAlpha=a; x.fillStyle=C.flaeche2; x.strokeStyle=C.grau; x.lineWidth=1; x.beginPath(); x.roundRect(30,196,300,22,6); x.fill(); x.stroke(); x.restore();
+    schrift(x,"schluckt überzählige Neutronen",180,207.5,C.grau,10,a);
+    if(h<.5)kugel(x,misch(8,X(0)-10,h/.5),Y,3,C.blau,a);
+    for(let k=0;k<4;k++){const seit=h-(k+.5), u=klemm(seit);
+      kern(X(k),Y,seit>=0,seit/.3,a);
+      if(seit<0)continue;
+      pille(x,X(k),Y-30,"1",C.gold,a);
+      if(k<3){ if(u<1)kugel(x,misch(X(k)+10,X(k+1)-10,u),Y,3,C.blau,a); } else kugel(x,X(3)+10+u*22,Y,3,C.blau,a);
+      kugel(x,misch(X(k)+4,X(k)+30,u),misch(Y+12,192,u),3,C.blau,a*(u<1?1:.35));
+    }
+    pille(x,180,38,"im Schnitt löst genau 1 die nächste aus",akz,a);
+    pille(x,180,250,"gleichmäßige Wärme",C.gold,klemm(h-3.5));
+  }
+ },
+ masse(x,s,p,t,akz){
+  if(s<=1){
+    const weg=s===1?weich(klemm(p*1.6)):0, A=1-weg, b2=s===0?klemm(p*1.5):1, lueckeA=s===0?klemm(p*3-1.8):1;
+    schrift(x,"vorher: Uran-236",180,68,C.grau,11,A); block(x,50,80,260,24,akz,A);
+    schrift(x,"nachher: 2 Bruchstücke + 3 Neutronen",180,136,C.grau,11,A*b2); block(x,50,148,244*b2,24,akz,A);
+    block(x,misch(294,172,weg),misch(148,112,weg),16,24,C.gold,lueckeA*(s===1?1-klemm(p*3-1.4):1),3);
+    if(s===0){pille(x,180,205,"es fehlt rund ein Tausendstel",C.gold,lueckeA); schrift(x,"(Lücke im Bild stark vergrößert)",180,232,C.grau,10,lueckeA);}
+    else{schrift(x,"E = m · c²",180,124,C.gold,34,klemm(p*3-1.4),700); pille(x,180,186,"wenig Masse → sehr viel Energie",C.text,klemm(p*3-2));}
+  }else if(s===2){
+    const a=klemm(p*4), n=Math.round(45*klemm((p-.15)/.7)), e=n===45?1:0;
+    block(x,42,118,26,26,akz,a); pille(x,55,166,"1 kg Uran-235",akz,a); schrift(x,"=",98,131,C.text,20,a,700);
+    for(let i=0;i<n;i++)block(x,124+(i%9)*24,88+((i/9)|0)*18,20,11,C.grau,1,2);
+    pille(x,230,204,"2.700 t Steinkohle",C.text,e); pille(x,230,230,"rund 45 Güterwagen",C.grau,e);
+  }else{
+    const a=klemm(p*3), u=weich(klemm((p-.25)/.6)), e=klemm(u*3-2);
+    schrift(x,"Wärme aus der Spaltung · 100 %",180,56,C.gold,11,a,700); block(x,45,68,270,24,C.gold,a);
+    pfeil(x,180,98,180,126,C.grau,a);
+    block(x,45,134,90*u,24,C.gruen,1); block(x,137,134,178*u,24,C.grau,.7);
+    pille(x,90,184,"1/3 Strom",C.gruen,e); pille(x,226,184,"2/3 Abwärme",C.grau,e);
+    pille(x,180,236,"Abwärme geht über Kühlturm oder Fluss weg",C.text,klemm(p*4-3));
+  }
+ },
+ spaltung(x,s,p,t,akz){
+  const MX=180,MY=138,R=46,RA=36,RB=29,AX=98,BX=264;
+  const aufbau=s===0?klemm(p*1.6):1;
+  const anflug=s<1?0:s===1?weich(klemm(p*1.15)):1;
+  const d=s<2?0:s===2?klemm(p*p*1.05+.14*Math.sin(p*20)*(1-p)):1;
+  const sp=s<3?0:s===3?weich(klemm(p*1.25)):1;
+  const waerme=s===4?p:0;
+  const nBlau=C.blau, pRot=C.rot;
+
+  // Wärme-Ringe hinter den Bruchstücken
+  if(s===4){[[AX,RA],[BX,RB]].forEach(([cx,r])=>{for(let k=0;k<3;k++){const f=(waerme*2.2+k/3)%1;
+    x.save();x.globalAlpha=(1-f)*.55*klemm(waerme*4);x.strokeStyle=C.gold;x.lineWidth=2;x.beginPath();x.arc(cx,MY,r+5+f*24,0,6.2832);x.stroke();x.restore()}})}
+
+  // Teilchen des Kerns
+  KERN.forEach(n=>{
+    if(n.gast&&s<2)return;
+    const dx=n.bx*R*(1+.5*d), dy=n.by*R*(1-.42*d*Math.exp(-Math.pow(n.bx/.38,2)))+Math.sin(t*9+n.i)*1.3*d*(1-sp);
+    const zx=(n.gruppe?BX:AX)-MX+n.zx*(n.gruppe?RB:RA), zy=n.zy*(n.gruppe?RB:RA);
+    const px=MX+misch(dx,zx,sp), py=MY+misch(dy,zy,sp);
+    const sichtbar=klemm(aufbau*1.4-(n.i/70)*.4);
+    kugel(x,px,py,5.4,n.proton?pRot:nBlau,sichtbar);
+  });
+
+  // anfliegendes Neutron
+  if(s===1){const nx=misch(22,MX-R-4,anflug);
+    x.save();x.globalAlpha=.5;x.strokeStyle=nBlau;x.lineWidth=2;x.setLineDash([3,4]);x.beginPath();x.moveTo(Math.max(14,nx-38),MY);x.lineTo(nx-8,MY);x.stroke();x.restore();
+    kugel(x,nx,MY,5.4,nBlau);
+    x.save();x.strokeStyle=C.text;x.lineWidth=1.2;x.beginPath();x.arc(nx,MY,8.5,0,6.2832);x.stroke();x.restore();
+    pille(x,Math.max(74,nx),MY-24,"langsames Neutron",nBlau,klemm(p*5));
+  }
+
+  // freie Neutronen
+  if(s>=3){const richt=[[-.42,-.91],[.5,-.87],[.12,.99]], weg=24+72*sp+(s===4?waerme*6:0), a=klemm((sp-.12)*4);
+    richt.forEach(([rx,ry])=>{const nx=MX+rx*weg, ny=MY+ry*weg;
+      x.save();x.globalAlpha=.45*a;x.strokeStyle=nBlau;x.lineWidth=1.6;x.setLineDash([3,4]);x.beginPath();x.moveTo(MX+rx*(weg-26),MY+ry*(weg-26));x.lineTo(nx-rx*8,ny-ry*8);x.stroke();x.restore();
+      kugel(x,nx,ny,5.4,nBlau,a);
+      if(s===4)pfeil(x,nx+rx*9,ny+ry*9,nx+rx*22,ny+ry*22,nBlau,klemm(waerme*3));
+    });
+  }
+
+  // Beschriftungen
+  if(s<=1){pille(x,MX,MY-R-22,"URAN-235",akz,aufbau);}
+  if(s===0){pille(x,MX,MY+R+24,"92 Protonen · 143 Neutronen",C.text,klemm(p*2.2-.6));}
+  if(s<=1){const a=s===0?klemm(p*2.2-.9):1;
+    kugel(x,112,264,5,pRot,a);kugel(x,196,264,5,nBlau,a);
+    x.save();x.globalAlpha=a;x.font='500 11px "JetBrains Mono",monospace';x.fillStyle=C.grau;x.textBaseline="middle";x.fillText("Proton",122,264.500);x.fillText("Neutron",206,264.500);x.restore();}
+  if(s===2){pille(x,MX,MY-R-26,"URAN-236 · instabil",C.gold);
+    pille(x,MX,MY+R+30,"schwingt und schnürt sich ein",C.text,klemm(p*3-.6));}
+  if(s>=3){const a=klemm(sp*2-.7);
+    pille(x,AX,MY+RA+22,"BARIUM-141",akz,a); pille(x,BX,MY+RB+29,"KRYPTON-92",akz,a);
+    pille(x,MX,22,"3 freie Neutronen",nBlau,klemm(sp*2-1));
+    if(s===3)pfeil(x,AX-RA-6,MY,AX-RA-22,MY,C.grau,a), pfeil(x,BX+RB+6,MY,BX+RB+22,MY,C.grau,a);}
+  if(s===4){const a=klemm(waerme*3); pille(x,MX+1,MY-12,"WÄRME",C.gold,a); pille(x,MX+1,MY+12,"200 MeV",C.gold,a);}
+ }
+};
+
+/* ---------- Nur auf kompassapps.de: als App installierbar (im Artefakt bleibt das aus) ---------- */
+if(location.protocol==="https:"&&location.hostname.endsWith("kompassapps.de")){
+  [["manifest","manifest.webmanifest"],["apple-touch-icon","apple-touch-icon.png"]].forEach(q=>{const l=document.createElement("link");l.rel=q[0];l.href=q[1];document.head.appendChild(l)});
+  if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+}
+
+/* ---------- Start ---------- */
+setzeThema(["dunkel","hell","auto"].includes(thema)?thema:"auto");
+window.addEventListener("hashchange",ansicht);
+ansicht();
+</script>
+</body>
+</html>
