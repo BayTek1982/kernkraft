@@ -741,24 +741,28 @@ function starte(l,b,total){
   const grenzen=[0]; S.forEach(s=>grenzen.push(grenzen[grenzen.length-1]+s.dauer));
   P={l,b,cv,ctx:cv.getContext("2d"),S,grenzen,total,t:S[0].dauer-.01,lauf:false,tempo:1,frisch:true,alt:-1,letzte:0};
   const pl=document.getElementById("pl"), sp=document.getElementById("sp");
-  pl.onclick=()=>{ if(P.lauf){P.lauf=false}else{ if(P.frisch||P.t>=P.total)P.t=0; P.frisch=false; P.lauf=true; P.letzte=performance.now(); requestAnimationFrame(takt)} knopf(); zeichne() };
-  document.getElementById("neu").onclick=()=>{P.t=0;P.frisch=false;P.lauf=true;P.letzte=performance.now();requestAnimationFrame(takt);knopf()};
+  pl.onclick=()=>{ if(P.lauf){P.lauf=false}else{ if(P.frisch||P.t>=P.total)P.t=0; P.frisch=false; P.lauf=true; P.letzte=performance.now(); anim()} knopf(); zeichne() };
+  document.getElementById("neu").onclick=()=>{P.t=0;P.frisch=false;P.lauf=true;P.letzte=performance.now();anim();knopf()};
   sp.oninput=()=>{P.t=+sp.value;P.frisch=false;zeichne()};
-  document.querySelectorAll("#chips [data-s]").forEach(c=>c.onclick=()=>{P.t=P.grenzen[+c.dataset.s];P.frisch=false;if(!P.lauf){P.lauf=true;P.letzte=performance.now();requestAnimationFrame(takt)}knopf();zeichne()});
+  document.querySelectorAll("#chips [data-s]").forEach(c=>c.onclick=()=>{P.t=P.grenzen[+c.dataset.s];P.frisch=false;if(!P.lauf){P.lauf=true;P.letzte=performance.now();anim()}knopf();zeichne()});
   document.querySelectorAll("#chips [data-tempo]").forEach(c=>c.onclick=()=>{P.tempo=+c.dataset.tempo;tempoKnopf()});
   const anpassen=()=>{const d=window.devicePixelRatio||1,w=cv.clientWidth;if(!w)return;cv.width=Math.round(w*d);cv.height=Math.round(w*280/360*d);zeichne()};
   if(window.ResizeObserver)new ResizeObserver(anpassen).observe(cv); else window.addEventListener("resize",anpassen);
+  // Lektion läuft beim Öffnen von selbst los (außer das Gerät wünscht wenig Bewegung)
+  if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)){P.t=0;P.frisch=false;P.lauf=true;P.letzte=performance.now();anim()}
   anpassen(); tempoKnopf(); knopf();
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(P&&P.cv===cv)zeichne()});
 }
 function knopf(){const pl=document.getElementById("pl");if(!pl||!P)return;pl.innerHTML=P.lauf?SYM.pause:SYM.play;pl.setAttribute("aria-label",P.lauf?"Pause":"Abspielen")}
 function tempoKnopf(){document.querySelectorAll("#chips [data-tempo]").forEach(c=>c.setAttribute("aria-pressed",+c.dataset.tempo===P.tempo))}
+let RAF=0; // immer nur EINE laufende Bildschleife
+function anim(){cancelAnimationFrame(RAF);RAF=window.requestAnimationFrame(takt)}
 function takt(jetzt){
   if(!P||!P.lauf)return;
   P.t+=Math.min(.25,(jetzt-P.letzte)/1000)*P.tempo; P.letzte=jetzt;
   if(P.t>=P.total){P.t=P.total;P.lauf=false;knopf();
     if(!gesehen.includes(P.l.nr)){gesehen.push(P.l.nr);schreib("kk-gesehen",gesehen);baueSeite()}}
-  zeichne(); if(P.lauf)requestAnimationFrame(takt);
+  zeichne(); if(P.lauf)anim();
 }
 function lage(){
   let i=P.S.length-1; for(let k=0;k<P.S.length;k++){if(P.t<P.grenzen[k+1]){i=k;break}}
